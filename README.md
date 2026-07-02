@@ -22,11 +22,11 @@ them), and the language model only turns the computed result into guidance. A
 small model doing depth-threshold arithmetic is a safety bug; a shortest-path
 search is not.
 
-The GPU flood shaders are optimized by a
-[state-machine kernel optimizer](https://github.com/msradam/autokernel-fsm)
-(AutoKernel ported to a finite state machine driven by an LLM agent). That
-optimization is what makes the GPU offload worthwhile: the concurrent GPU + CPU
-split here is the workload it exists to enable.
+The GPU flood shaders are optimized by
+[AgentVoodoo](https://github.com/msradam/AgentVoodoo), AutoKernel ported to a
+finite-state-machine optimizer driven by an LLM agent. That optimization is what
+makes the GPU offload worthwhile: the concurrent GPU + CPU split here is the
+workload it exists to enable.
 
 ## Pipeline
 
