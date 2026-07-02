@@ -22,6 +22,11 @@ them), and the language model only turns the computed result into guidance. A
 small model doing depth-threshold arithmetic is a safety bug; a shortest-path
 search is not.
 
+The GPU flood shaders are optimized by
+[AgentKernel](https://github.com/msradam/agentkernel), a correctness-gated agentic
+kernel optimizer. That optimization is what makes the GPU offload worthwhile: the
+concurrent GPU + CPU split here is the workload AgentKernel exists to enable.
+
 ## Pipeline
 
 1. `fetch_dem.py <name> <minlat> <maxlat> <minlon> <maxlon>` pulls a real
