@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+*.spv
+vkflood
+.DS_Store

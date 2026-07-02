@@ -1,0 +1,28 @@
+#version 450
+layout(local_size_x = 16, local_size_y = 16) in;
+layout(std430, binding = 0) readonly buffer Terrain { float H[]; };
+layout(std430, binding = 1) readonly buffer WaterIn { float W[]; };
+layout(std430, binding = 2) writeonly buffer Flux { vec4 F[]; };
+layout(push_constant) uniform PC { uint SZ; float k; float rain; } pc;
+void main() {
+    int SZ = int(pc.SZ);
+    int x = int(gl_GlobalInvocationID.x), y = int(gl_GlobalInvocationID.y);
+    if (x >= SZ || y >= SZ) return;
+    uint i = uint(y) * uint(SZ) + uint(x);
+    int xl = max(x - 1, 0), xr = min(x + 1, SZ - 1);
+    int yu = max(y - 1, 0), yd = min(y + 1, SZ - 1);
+    uint iL = uint(y) * uint(SZ) + uint(xl);
+    uint iR = uint(y) * uint(SZ) + uint(xr);
+    uint iU = uint(yu) * uint(SZ) + uint(x);
+    uint iD = uint(yd) * uint(SZ) + uint(x);
+    float hi = H[i] + W[i];
+    float fL = max(0.0, pc.k * (hi - (H[iL] + W[iL])));
+    float fR = max(0.0, pc.k * (hi - (H[iR] + W[iR])));
+    float fU = max(0.0, pc.k * (hi - (H[iU] + W[iU])));
+    float fD = max(0.0, pc.k * (hi - (H[iD] + W[iD])));
+    float tot = fL + fR + fU + fD;
+    float wi = W[i];
+    float s = wi / max(tot, max(wi, 1e-20));
+    fL *= s; fR *= s; fU *= s; fD *= s;
+    F[i] = vec4(fL, fR, fU, fD);
+}

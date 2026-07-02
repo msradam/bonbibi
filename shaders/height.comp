@@ -1,0 +1,24 @@
+#version 450
+layout(local_size_x = 16, local_size_y = 16) in;
+layout(std430, binding = 1) readonly buffer WaterIn { float W[]; };
+layout(std430, binding = 2) readonly buffer Flux { vec4 F[]; };
+layout(std430, binding = 3) writeonly buffer WaterOut { float Wout[]; };
+layout(push_constant) uniform PC { uint SZ; float k; float rain; } pc;
+void main() {
+    int SZ = int(pc.SZ);
+    int x = int(gl_GlobalInvocationID.x), y = int(gl_GlobalInvocationID.y);
+    if (x >= SZ || y >= SZ) return;
+    uint i = uint(y) * uint(SZ) + uint(x);
+    int xl = max(x - 1, 0), xr = min(x + 1, SZ - 1);
+    int yu = max(y - 1, 0), yd = min(y + 1, SZ - 1);
+    uint iL = uint(y) * uint(SZ) + uint(xl);
+    uint iR = uint(y) * uint(SZ) + uint(xr);
+    uint iU = uint(yu) * uint(SZ) + uint(x);
+    uint iD = uint(yd) * uint(SZ) + uint(x);
+    float mL = float(x > 0), mR = float(x < SZ - 1);
+    float mU = float(y > 0), mD = float(y < SZ - 1);
+    vec4 fi = F[i];
+    float outflow = fi.x + fi.y + fi.z + fi.w;
+    float inflow = F[iL].y * mL + F[iR].x * mR + F[iU].w * mU + F[iD].z * mD;
+    Wout[i] = W[i] + pc.rain - outflow + inflow;
+}
