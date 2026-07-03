@@ -23,7 +23,7 @@ small model doing depth-threshold arithmetic is a safety bug; a shortest-path
 search is not.
 
 The GPU flood shaders are optimized by
-[Seppa](https://github.com/msradam/Seppa), AutoKernel ported to a
+[Seppa](https://github.com/msradam/seppa), AutoKernel ported to a
 finite-state-machine optimizer driven by an LLM agent. That optimization is what
 makes the GPU offload worthwhile: the concurrent GPU + CPU split here is the
 workload it exists to enable.
