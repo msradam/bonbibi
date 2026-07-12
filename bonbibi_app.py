@@ -41,9 +41,16 @@ LIVE = f"{RES}/static/live"
 UI = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ui")
 VKFLOOD_ENV = {"STRIP": "2", "FUSED": "1", "FLUX_SPV": "fused2s.spv"}
 LLAMA_BIN = f"{RES}/llama.cpp/build-vulkan/bin/llama-completion"
-# Mobility thresholds (metres of standing water); see HACKATHON.md for the
-# literature backing. Config-driven so findings can adjust them in one place.
-THRESHOLDS = {"wheelchair": 0.5, "vehicle": 2.0}
+# Mobility thresholds: limiting STILL-WATER depths from ARR Project 10 and
+# AIDR Guideline 7-3 (see HACKATHON.md for quotes). Wheelchair/limited
+# mobility: no safe flow regime is documented for frail or disabled persons,
+# so only nuisance depth is allowed. On foot: 0.5 m is ARR's depth ceiling
+# for children, adopted as the conservative walking limit because the
+# simulation does not model velocity (able-bodied adult ceiling is 1.2 m).
+# Vehicle: 0.3 m is the floating depth of a small passenger car (AIDR H1/H2
+# boundary). Note vehicles become unsafe BEFORE pedestrians.
+THRESHOLDS = {"wheelchair": 0.1, "foot": 0.5, "vehicle": 0.3}
+BANDS = (0.05, 0.3, 0.5, 1.2)  # AIDR hazard classes H1 | H2 | H3 | H4+
 
 TIME_RE = re.compile(r"time=([0-9.]+)s")
 
@@ -84,14 +91,12 @@ def run_flood(steps: int, rain: float, dem: str, dump: str | None = None) -> str
 
 def band_coverage(water: np.ndarray) -> dict:
     n = water.size
+    lo, h1, h2, h3 = BANDS
     return {
-        "shallow_pct": round(
-            100.0 * np.count_nonzero((water >= 0.05) & (water < 0.5)) / n, 1
-        ),
-        "vehicle_pct": round(
-            100.0 * np.count_nonzero((water >= 0.5) & (water < 2.0)) / n, 1
-        ),
-        "deep_pct": round(100.0 * np.count_nonzero(water >= 2.0) / n, 1),
+        "h1_pct": round(100.0 * np.count_nonzero((water >= lo) & (water < h1)) / n, 1),
+        "h2_pct": round(100.0 * np.count_nonzero((water >= h1) & (water < h2)) / n, 1),
+        "h3_pct": round(100.0 * np.count_nonzero((water >= h2) & (water < h3)) / n, 1),
+        "h4_pct": round(100.0 * np.count_nonzero(water >= h3) / n, 1),
         "max_depth_m": round(float(water.max()), 2),
     }
 
@@ -121,9 +126,11 @@ def publish(
     }
     if water is not None:
         rgba = np.zeros((*water.shape, 4), dtype=np.uint8)
-        rgba[(water >= 0.05) & (water < 0.5)] = (66, 165, 245, 110)
-        rgba[(water >= 0.5) & (water < 2.0)] = (30, 90, 200, 165)
-        rgba[water >= 2.0] = (69, 39, 160, 205)
+        lo, h1, h2, h3 = BANDS
+        rgba[(water >= lo) & (water < h1)] = (144, 202, 249, 100)
+        rgba[(water >= h1) & (water < h2)] = (66, 165, 245, 130)
+        rgba[(water >= h2) & (water < h3)] = (30, 90, 200, 170)
+        rgba[water >= h3] = (69, 39, 160, 205)
         Image.fromarray(rgba).save(f"{LIVE}/depth.png.tmp", format="PNG")
         os.replace(f"{LIVE}/depth.png.tmp", f"{LIVE}/depth.png")
     with open(f"{LIVE}/state.json.tmp", "w") as f:
@@ -177,10 +184,10 @@ ADVISORY_INSTRUCTION = (
 )
 
 PERSON_INSTRUCTION = (
-    "Write three short sentences based only on the documents: first, what "
-    "this person should do right now if they use a wheelchair, using their "
-    "route result; second, what they should do if they can drive, using "
-    "that route result; third, one safety note from the flood assessment."
+    "Write four short sentences based only on the documents: what this "
+    "person should do right now if they use a wheelchair or cannot wade; "
+    "what to do if they are on foot; what to do if they can drive; and one "
+    "safety note from the flood assessment. Use each route result."
 )
 
 
@@ -191,10 +198,11 @@ def flood_doc(area, rain, steps, cov) -> dict:
         "text": (
             f"Simulated storm over {area}: rain {rain} m per cell per "
             f"step for {steps} steps. Deepest water {cov.get('max_depth_m', '?')} m. "
-            f"Coverage: {cov.get('shallow_pct', '?')}% of the area under shallow "
-            f"water below 0.5 m (passable for everyone), "
-            f"{cov.get('vehicle_pct', '?')}% between 0.5 and 2 m (vehicles only), "
-            f"{cov.get('deep_pct', '?')}% deeper than 2 m (impassable)."
+            f"Coverage: {cov.get('h1_pct', '?')}% under shallow water below 0.3 m, "
+            f"{cov.get('h2_pct', '?')}% at 0.3 to 0.5 m (unsafe for vehicles), "
+            f"{cov.get('h3_pct', '?')}% at 0.5 to 1.2 m (unsafe on foot except "
+            f"able-bodied adults), and {cov.get('h4_pct', '?')}% above 1.2 m "
+            f"(unsafe for everyone). This is a simulation, not an observation."
         ),
     }
 
@@ -204,7 +212,7 @@ def narrate(docs: list, instruction: str):
     payload = {
         "stream": True,
         "temperature": 0,
-        "max_tokens": 180,
+        "max_tokens": 240,
         "chat_template_kwargs": {"documents": docs},
         "messages": [
             {
@@ -280,6 +288,17 @@ def do_run(p: RunParams):
             RUN["phase"] = "narrating"
         docs = [
             flood_doc(area, p.rain, p.steps, cov),
+            {
+                "doc_id": 4,
+                "title": "Mobility safety limits (still water)",
+                "text": (
+                    "Vehicles are unsafe in water above 0.3 m (cars float). "
+                    "Walking is unsafe above 0.5 m. Wheelchair users and "
+                    "people who cannot wade are unsafe in any standing water "
+                    "above 0.1 m. Able-bodied adults must never enter water "
+                    "above 1.2 m."
+                ),
+            },
             {
                 "doc_id": 2,
                 "title": f"Shelter status in {area}",
@@ -397,13 +416,16 @@ def locate(q: LocateParams):
             paths[name] = [
                 routing.to_lonlat(r, c, bbox) for r, c in path[::4] + [path[-1]]
             ]
-            action = (
-                "Recommended action: a safe path exists, so go now while it "
-                "is open; conditions can worsen quickly."
-                if name == "wheelchair"
-                else "Recommended action: a safe driving path exists, so "
-                "drive it now; never drive into water of unknown depth."
-            )
+            action = {
+                "wheelchair": "Recommended action: a path avoiding standing "
+                "water exists, so go now with assistance if possible; "
+                "conditions can worsen quickly.",
+                "foot": "Recommended action: a walkable path exists, so go "
+                "now; never enter fast-moving water.",
+                "vehicle": "Recommended action: a driveable path avoiding "
+                "water above 0.3 m exists, so drive it now; never drive "
+                "into water of unknown depth.",
+            }[name]
             text = (
                 f"From this person's location, the nearest shelter reachable "
                 f"without crossing water deeper than {thr} m is {s['name']} "
@@ -459,11 +481,49 @@ def locate(q: LocateParams):
     return {"ok": True, "routes": results}
 
 
+def cap_alert(s: dict) -> dict | None:
+    """CAP 1.2-shaped structured alert (status Exercise: simulated event)."""
+    if not s.get("coverage") or not LAST.get("area"):
+        return None
+    cov = s["coverage"]
+    la0, la1, lo0, lo1 = LAST["bbox"]
+    sev = (
+        "Extreme"
+        if cov["h4_pct"] > 10
+        else "Severe"
+        if cov["h3_pct"] > 10
+        else "Moderate"
+    )
+    return {
+        "identifier": f"bonbibi-{LAST['area']}-{int(s.get('started', 0))}",
+        "sender": "bonbibi-on-device",
+        "sent": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+        "status": "Exercise",
+        "msgType": "Alert",
+        "scope": "Public",
+        "info": {
+            "category": "Met",
+            "event": "Flood (simulated)",
+            "urgency": "Immediate",
+            "severity": sev,
+            "certainty": "Likely",
+            "headline": f"Simulated flood over {LAST['area']}: deepest water "
+            f"{cov['max_depth_m']} m",
+            "instruction": s.get("guidance") or "",
+            "area": {
+                "areaDesc": LAST["area"],
+                "polygon": f"{la0},{lo0} {la1},{lo0} {la1},{lo1} {la0},{lo1} {la0},{lo0}",
+            },
+        },
+    }
+
+
 @app.get("/api/state")
 def state():
     with _lock:
         s = dict(RUN)
     s["elapsed"] = round(time.time() - s["started"]) if s.get("started") else 0
+    s["cap"] = cap_alert(s) if s.get("done") else None
     return s
 
 

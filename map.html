@@ -17,11 +17,13 @@ html,body{margin:0;height:100%;font:12px sans-serif}
 </style></head><body>
 <div id="map"></div>
 <div id="legend">
-  <span><span class="sw" style="background:rgba(66,165,245,.55)"></span>&lt;0.5 m: passable (all)</span>
-  <span><span class="sw" style="background:rgba(30,90,200,.7)"></span>0.5&ndash;2 m: vehicle only</span>
-  <span><span class="sw" style="background:rgba(69,39,160,.8)"></span>&gt;2 m: impassable</span>
-  <span style="color:#2e7d32;font-weight:bold">&#9473;</span> wheelchair route
-  <span style="color:#ef6c00;font-weight:bold">&#9473;</span> vehicle route
+  <span><span class="sw" style="background:rgba(144,202,249,.5)"></span>&lt;0.3 m (H1)</span>
+  <span><span class="sw" style="background:rgba(66,165,245,.6)"></span>0.3&ndash;0.5 m: no driving (H2)</span>
+  <span><span class="sw" style="background:rgba(30,90,200,.7)"></span>0.5&ndash;1.2 m: adults on foot only (H3)</span>
+  <span><span class="sw" style="background:rgba(69,39,160,.8)"></span>&gt;1.2 m: unsafe for all (H4+)</span>
+  <span style="color:#2e7d32;font-weight:bold">&#9473;</span> wheelchair
+  <span style="color:#0f4c81;font-weight:bold">&#9473;</span> on foot
+  <span style="color:#ef6c00;font-weight:bold">&#9473;</span> vehicle
 </div>
 <script>
 const q = new URLSearchParams(location.search);
@@ -66,6 +68,9 @@ map.on("load", () => {
   map.addLayer({ id: "route-wheel", type: "line", source: "routes",
     filter: ["==", ["get", "profile"], "wheelchair"],
     paint: { "line-color": "#2e7d32", "line-width": 4 } });
+  map.addLayer({ id: "route-foot", type: "line", source: "routes",
+    filter: ["==", ["get", "profile"], "foot"],
+    paint: { "line-color": "#0f4c81", "line-width": 4, "line-dasharray": [4, 2] } });
   map.addLayer({ id: "route-vehicle", type: "line", source: "routes",
     filter: ["==", ["get", "profile"], "vehicle"],
     paint: { "line-color": "#ef6c00", "line-width": 4, "line-dasharray": [2, 1] } });

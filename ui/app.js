@@ -89,33 +89,34 @@ async function poll() {
 
   if (s.coverage) {
     const c = s.coverage;
-    const pct = Math.min(100, (c.max_depth_m / 3) * 100);
+    const pct = Math.min(100, (c.max_depth_m / 2) * 100);
     $("gauge-fill").style.height = `${pct}%`;
     $("gauge").setAttribute(
       "aria-label",
       `Depth gauge. Deepest simulated water ${c.max_depth_m} metres. ` +
         `Wheelchair limit 0.5 metres, vehicle limit 2.0 metres.`
     );
-    $("cov-shallow").textContent = `${c.shallow_pct}%`;
-    $("cov-vehicle").textContent = `${c.vehicle_pct}%`;
-    $("cov-deep").textContent = `${c.deep_pct}%`;
+    $("cov-h1").textContent = `${c.h1_pct}%`;
+    $("cov-h2").textContent = `${c.h2_pct}%`;
+    $("cov-h3").textContent = `${c.h3_pct}%`;
+    $("cov-h4").textContent = `${c.h4_pct}%`;
     $("map-alt").textContent =
-      `Flood over ${$("area").value}: ${c.shallow_pct}% of the area under shallow water, ` +
-      `${c.vehicle_pct}% passable by vehicle only, ${c.deep_pct}% impassable; ` +
+      `Flood over ${$("area").value}: ${c.h1_pct}% under 0.3 m, ` +
+      `${c.h2_pct}% at 0.3 to 0.5 m (no driving), ${c.h3_pct}% at 0.5 to 1.2 m ` +
+      `(adults on foot only), ${c.h4_pct}% above 1.2 m (unsafe for all); ` +
       `deepest water ${c.max_depth_m} m.`;
   }
 
-  if (s.routes) {
-    chip($("chip-wheel"), s.routes.wheelchair);
-    chip($("chip-vehicle"), s.routes.vehicle);
-    $("route-wheel").textContent = s.routes.wheelchair.summary;
-    $("route-vehicle").textContent = s.routes.vehicle.summary;
-  } else {
-    chip($("chip-wheel"), null);
-    chip($("chip-vehicle"), null);
-    $("route-wheel").textContent = "Tap the map to route a person to shelter.";
-    $("route-vehicle").textContent = "Tap the map to route a person to shelter.";
+  for (const [key, id] of [["wheelchair", "wheel"], ["foot", "foot"], ["vehicle", "vehicle"]]) {
+    if (s.routes && s.routes[key]) {
+      chip($(`chip-${id}`), s.routes[key]);
+      $(`route-${id}`).textContent = s.routes[key].summary;
+    } else {
+      chip($(`chip-${id}`), null);
+      $(`route-${id}`).textContent = "Tap the map to route a person to shelter.";
+    }
   }
+  if (s.cap) $("cap-json").textContent = JSON.stringify(s.cap, null, 1);
 
   if (s.guidance) $("guidance").textContent = s.guidance;
 

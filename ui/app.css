@@ -144,7 +144,7 @@ button[disabled] { background: var(--ink-soft); cursor: default; }
 }
 .gauge-fill {
   position: absolute; bottom: 0; left: 0; right: 0; height: 0%;
-  background: linear-gradient(to top, var(--band-deep) 0 66%, var(--band-vehicle) 66% 83%, var(--band-shallow) 83% 100%);
+  background: linear-gradient(to top, #90caf9 0 15%, var(--band-shallow) 15% 25%, var(--band-vehicle) 25% 60%, var(--band-deep) 60% 100%);
   background-size: 100% 190px; background-position: bottom;
   transition: height 500ms ease-out;
 }
@@ -152,17 +152,19 @@ button[disabled] { background: var(--ink-soft); cursor: default; }
   position: absolute; left: 0; right: -6px; border-top: 2px dashed var(--ink);
   font-size: 0; color: transparent;
 }
-.notch-wheel { bottom: calc(0.5 / 3 * 100%); }
-.notch-vehicle { bottom: calc(2 / 3 * 100%); }
+.notch-vehicle { bottom: calc(0.3 / 2 * 100%); }
+.notch-foot { bottom: calc(0.5 / 2 * 100%); }
+.notch-adult { bottom: calc(1.2 / 2 * 100%); }
 .gauge-scale { display: flex; flex-direction: column; justify-content: space-between;
                font-size: 11px; color: var(--ink-soft); padding: 0; }
 
 .legend { list-style: none; margin: 0; padding: 0; font-size: 14px; }
 .legend li { display: flex; align-items: center; gap: var(--s2); margin-bottom: var(--s2); }
 .sw { width: 16px; height: 12px; border-radius: 3px; border: 1px solid rgba(0,0,0,.25); flex: none; }
-.sw-shallow { background: var(--band-shallow); }
-.sw-vehicle { background: var(--band-vehicle); }
-.sw-deep { background: var(--band-deep); }
+.sw-h1 { background: #90caf9; }
+.sw-h2 { background: var(--band-shallow); }
+.sw-h3 { background: var(--band-vehicle); }
+.sw-h4 { background: var(--band-deep); }
 .cov { margin-left: auto; color: var(--ink-soft); font-weight: 400; }
 .dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff;
        box-shadow: 0 0 0 1px rgba(0,0,0,.3); flex: none; }
@@ -177,6 +179,7 @@ button[disabled] { background: var(--ink-soft); cursor: default; }
               display: flex; align-items: center; gap: var(--s2); flex-wrap: wrap; }
 .route-line { width: 22px; height: 0; border-top: 4px solid; border-radius: 2px; }
 .route-line-wheel { border-color: var(--wheel); }
+.route-line-foot { border-color: var(--river); border-top-style: dashed; }
 .route-line-vehicle { border-color: var(--vehicle); border-top-style: dashed; }
 .route-text { margin: 0; font-size: 14px; color: var(--ink-soft); overflow-wrap: anywhere; }
 .chip {
@@ -200,6 +203,12 @@ button[disabled] { background: var(--ink-soft); cursor: default; }
 #guidance { font-size: 19px; line-height: 1.55; max-width: 70ch; }
 #guidance.streaming::after { content: "▍"; animation: caret 1s steps(1) infinite; color: var(--river); }
 @keyframes caret { 50% { opacity: 0; } }
+
+.disclaimer { margin-top: var(--s3); font-size: 12.5px; color: var(--ink-soft); }
+.cap { margin-top: var(--s2); font-size: 13px; }
+.cap summary { cursor: pointer; color: var(--river); min-height: 24px; }
+.cap pre { font: 400 11px/1.5 var(--mono); background: var(--paper);
+           padding: var(--s3); border-radius: 6px; overflow-x: auto; }
 
 /* engine room */
 .engine-room {
