@@ -1,0 +1,974 @@
+[
+ {
+  "name": "Muslim High School",
+  "kind": "school",
+  "lat": 23.7091051,
+  "lon": 90.4128448
+ },
+ {
+  "name": "Dhaka Collegiate School",
+  "kind": "school",
+  "lat": 23.7077555,
+  "lon": 90.410488
+ },
+ {
+  "name": "Shahid Nabi High School",
+  "kind": "school",
+  "lat": 23.7193686,
+  "lon": 90.4220772
+ },
+ {
+  "name": "K.L.Jubilee High School & College",
+  "kind": "school",
+  "lat": 23.7054631,
+  "lon": 90.4127366
+ },
+ {
+  "name": "Singtola Mosque",
+  "kind": "place_of_worship",
+  "lat": 23.706181,
+  "lon": 90.4155474
+ },
+ {
+  "name": "Mondir",
+  "kind": "place_of_worship",
+  "lat": 23.7066181,
+  "lon": 90.4131978
+ },
+ {
+  "name": "Srishdas Lane Mosque",
+  "kind": "place_of_worship",
+  "lat": 23.7065123,
+  "lon": 90.4133456
+ },
+ {
+  "name": "Mosque",
+  "kind": "place_of_worship",
+  "lat": 23.7060555,
+  "lon": 90.4146249
+ },
+ {
+  "name": "Pogose School \u09aa\u09cb\u0997\u09cb\u099c \u09b8\u09cd\u0995\u09c1\u09b2",
+  "kind": "school",
+  "lat": 23.709365,
+  "lon": 90.410258
+ },
+ {
+  "name": "St. Gregory's High School",
+  "kind": "school",
+  "lat": 23.7084812,
+  "lon": 90.4141898
+ },
+ {
+  "name": "Darut Ta-liz Modrara",
+  "kind": "school",
+  "lat": 23.7199648,
+  "lon": 90.4055247
+ },
+ {
+  "name": "Sonali Nupur Community Center",
+  "kind": "community_centre",
+  "lat": 23.7058369,
+  "lon": 90.4205716
+ },
+ {
+  "name": "Gankosh Coaching Center",
+  "kind": "school",
+  "lat": 23.7020893,
+  "lon": 90.4245169
+ },
+ {
+  "name": "Jamalul Koryan Madrasha",
+  "kind": "place_of_worship",
+  "lat": 23.7012561,
+  "lon": 90.4221041
+ },
+ {
+  "name": "school",
+  "kind": "school",
+  "lat": 23.7012639,
+  "lon": 90.4244044
+ },
+ {
+  "name": "\u09ac\u09bf\u09a8\u09a4 \u09ac\u09bf\u09ac\u09bf \u09ae\u09b8\u099c\u09bf\u09a6",
+  "kind": "place_of_worship",
+  "lat": 23.7111007,
+  "lon": 90.4181458
+ },
+ {
+  "name": "Mosque",
+  "kind": "place_of_worship",
+  "lat": 23.7101247,
+  "lon": 90.4175979
+ },
+ {
+  "name": "Wisdom Ideal School and College",
+  "kind": "school",
+  "lat": 23.707077,
+  "lon": 90.4200904
+ },
+ {
+  "name": "Banglayon Rifle Biddhaniketon",
+  "kind": "school",
+  "lat": 23.7072988,
+  "lon": 90.4213813
+ },
+ {
+  "name": "Asia Khatun Bidya NIketan",
+  "kind": "school",
+  "lat": 23.7004726,
+  "lon": 90.4208506
+ },
+ {
+  "name": "300 years old",
+  "kind": "place_of_worship",
+  "lat": 23.7018459,
+  "lon": 90.4219909
+ },
+ {
+  "name": "Gurudwara Sangat Tola Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.7068099,
+  "lon": 90.4137782
+ },
+ {
+  "name": "\u09af\u09c1\u0997\u09bf\u09a8\u0997\u09b0 \u099c\u09be\u09ae\u09c7 \u09ae\u09b8\u099c\u09bf\u09a6",
+  "kind": "place_of_worship",
+  "lat": 23.7193267,
+  "lon": 90.4162893
+ },
+ {
+  "name": "West Gandaria Mosque",
+  "kind": "place_of_worship",
+  "lat": 23.7073027,
+  "lon": 90.421246
+ },
+ {
+  "name": "\u09a6\u09c1\u09b0\u09cd\u0997\u09be \u09ae\u09a8\u09cd\u09a6\u09bf\u09b0",
+  "kind": "place_of_worship",
+  "lat": 23.7162465,
+  "lon": 90.4151927
+ },
+ {
+  "name": "school",
+  "kind": "school",
+  "lat": 23.7097124,
+  "lon": 90.4118128
+ },
+ {
+  "name": "Tati Bazar Shib Mondir",
+  "kind": "place_of_worship",
+  "lat": 23.7109367,
+  "lon": 90.4086337
+ },
+ {
+  "name": "St Thomas Church",
+  "kind": "place_of_worship",
+  "lat": 23.7101868,
+  "lon": 90.4122369
+ },
+ {
+  "name": "Bibi Ka Rouja",
+  "kind": "place_of_worship",
+  "lat": 23.70187,
+  "lon": 90.41566
+ },
+ {
+  "name": "school",
+  "kind": "school",
+  "lat": 23.7182291,
+  "lon": 90.4160793
+ },
+ {
+  "name": "Baytul Ezzat Jame Masjid",
+  "kind": "place_of_worship",
+  "lat": 23.7129682,
+  "lon": 90.412564
+ },
+ {
+  "name": "Fakir Chan",
+  "kind": "community_centre",
+  "lat": 23.7133997,
+  "lon": 90.417921
+ },
+ {
+  "name": "Monija Rahman Girls High School",
+  "kind": "school",
+  "lat": 23.7039858,
+  "lon": 90.4226276
+ },
+ {
+  "name": "Durga Mandir",
+  "kind": "place_of_worship",
+  "lat": 23.7043462,
+  "lon": 90.4198495
+ },
+ {
+  "name": "school",
+  "kind": "school",
+  "lat": 23.7187374,
+  "lon": 90.4080656
+ },
+ {
+  "name": "Shahedia Jame Masjid",
+  "kind": "place_of_worship",
+  "lat": 23.7059109,
+  "lon": 90.4219415
+ },
+ {
+  "name": "Bongshal Rukon Uddin Tahfijul Kur'an Madrasa",
+  "kind": "school",
+  "lat": 23.7181976,
+  "lon": 90.4071408
+ },
+ {
+  "name": "Bangshal Rukon Uddin Jame Masjid",
+  "kind": "place_of_worship",
+  "lat": 23.7179834,
+  "lon": 90.4070331
+ },
+ {
+  "name": "Talimul Kur'an Madrasa",
+  "kind": "school",
+  "lat": 23.7131801,
+  "lon": 90.4116688
+ },
+ {
+  "name": "Rokonpur Girls High School",
+  "kind": "school",
+  "lat": 23.7112517,
+  "lon": 90.4163056
+ },
+ {
+  "name": "Winston Ideal School",
+  "kind": "school",
+  "lat": 23.7091106,
+  "lon": 90.4134899
+ },
+ {
+  "name": "Gopinath Akhara Family Temple, Hindu temple, 56 Goal Nagar Lane, Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.7138754,
+  "lon": 90.4090711
+ },
+ {
+  "name": "Basabari Lane Jame Masjid, Tanti, Nawab Eusuf Rd, Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.7140506,
+  "lon": 90.4069621
+ },
+ {
+  "name": "Chinir Dana jame masjid, 26,27 k.p ghosh street, Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.713521,
+  "lon": 90.4099845
+ },
+ {
+  "name": "Zindabahar Govment Primary School, Zindabahar 2nd Ln, Dhaka",
+  "kind": "school",
+  "lat": 23.713432,
+  "lon": 90.4060877
+ },
+ {
+  "name": "Zindabahar Jaame Masjid, Nowab Yousuf Road, Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.7135645,
+  "lon": 90.4061878
+ },
+ {
+  "name": "Habibiya Jame Mosjid, Distilary Road, Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.7082483,
+  "lon": 90.4208415
+ },
+ {
+  "name": "Baniya Nagar Belal (Rah) Jame Mosjid, Katabor Pal Lane, Dholai Khal Notun Sarak, Baniya Nagar, Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.7094708,
+  "lon": 90.4189174
+ },
+ {
+  "name": "Hrishikesh Das Road Masjid, R M Dash Rd, Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.7101052,
+  "lon": 90.4177542
+ },
+ {
+  "name": "Panch Bhai Ghat Lane Jame Masjid",
+  "kind": "place_of_worship",
+  "lat": 23.7105596,
+  "lon": 90.4162965
+ },
+ {
+  "name": "Haji Moinuddin Jama Mashjid, Dholaikhal Rd, Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.7146349,
+  "lon": 90.4094931
+ },
+ {
+  "name": "Nayabazar Jame Masjid, Kazi Alauddin Road, Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.7146871,
+  "lon": 90.406764
+ },
+ {
+  "name": "Begum Shahzadi Masjid, Bagdasa Lane, Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.7143926,
+  "lon": 90.4052587
+ },
+ {
+  "name": "Fazlul Karim Community Center, Community center, English Road, Dhaka",
+  "kind": "community_centre",
+  "lat": 23.7140651,
+  "lon": 90.4105814
+ },
+ {
+  "name": "Dakshin Muhsendi Sree Sree Shiv Temple, Dholaikhal Rd, Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.7129217,
+  "lon": 90.4145026
+ },
+ {
+  "name": "Dokhin Muhoshindi Sorkari Prathomik Biddaloy, School, Lal Mohan Saha Street, Thana- Sutrapur, Dhaka",
+  "kind": "school",
+  "lat": 23.7131442,
+  "lon": 90.4149997
+ },
+ {
+  "name": "Ray Saheb Bazar Boro Masjid, Nawabpur Rd, Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.7138661,
+  "lon": 90.411512
+ },
+ {
+  "name": "Dholaikhal Jame Masjid, Dholaikhal, Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.7137343,
+  "lon": 90.4137034
+ },
+ {
+  "name": "Muslim Govt. Primary School, Lal Mohan Saha Street, Dhaka",
+  "kind": "school",
+  "lat": 23.713043,
+  "lon": 90.4154101
+ },
+ {
+  "name": "Haji Golam Mawla Government Primary School, Elementary school, Dholaikhal Rd, Dhaka",
+  "kind": "school",
+  "lat": 23.7114742,
+  "lon": 90.4168443
+ },
+ {
+  "name": "DokkhinMuhsendi Jama Mosjid, Lalmohan Saha St, Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.7124661,
+  "lon": 90.4165075
+ },
+ {
+  "name": "Binat Bibi Masjid, Narinda Rd, Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.7110526,
+  "lon": 90.4182477
+ },
+ {
+  "name": "Dholaikhal Madrasa, Religious school, Goal Ghat Lane, Dhaka",
+  "kind": "school",
+  "lat": 23.7136696,
+  "lon": 90.4140701
+ },
+ {
+  "name": "Chini Thikra Jame Masjid ~ South Moushundi, Dakkhin Moushundi Rd, Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.7117241,
+  "lon": 90.4177371
+ },
+ {
+  "name": "Sri Sri Shiv Mandir, Hindu temple, New Road, Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.7105395,
+  "lon": 90.4237487
+ },
+ {
+  "name": "Darussalam Ashiya Jame Masjid, Sharat Gupta Rd, Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.7104881,
+  "lon": 90.4231741
+ },
+ {
+  "name": "Agniveer Dhaka, Hindu temple, Doyaganj New Rd, Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.7112217,
+  "lon": 90.4233318
+ },
+ {
+  "name": "The Latest Boogie Woogie, Event venue, Doyaganj New Rd, Dhaka",
+  "kind": "community_centre",
+  "lat": 23.7155492,
+  "lon": 90.4206979
+ },
+ {
+  "name": "Childs Fairyland Tutorial, Swamibag,Gandaria, Hatkhola Rd, Dhaka",
+  "kind": "school",
+  "lat": 23.7141096,
+  "lon": 90.4221641
+ },
+ {
+  "name": "Sree Sree Madneswar Shiv Mandir, Hindu temple, Hatkhola Rd, Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.7173276,
+  "lon": 90.4212511
+ },
+ {
+  "name": "Nur E Shefa Jame Masjid, K.M. Das Lane Hatkhola Rd, Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.7173263,
+  "lon": 90.4220957
+ },
+ {
+  "name": "Mitali Biddyapith High School, Swamibagh Rd, Dhaka",
+  "kind": "school",
+  "lat": 23.7167096,
+  "lon": 90.4233085
+ },
+ {
+  "name": "Baitul Aman Jame Masjid - Wari, Salauddin Bhaban , Dhaka - Chittagong Highway, Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.7167926,
+  "lon": 90.4200826
+ },
+ {
+  "name": "Bangladesh Oxford School - Wari, Chandi Charan Bosh St, Dhaka",
+  "kind": "school",
+  "lat": 23.7193846,
+  "lon": 90.4181691
+ },
+ {
+  "name": "Kamrunnesa Govt. Girls High School",
+  "kind": "school",
+  "lat": 23.7190665,
+  "lon": 90.4226367
+ },
+ {
+  "name": "Shaheed Jame Masjid ~ Narinda",
+  "kind": "place_of_worship",
+  "lat": 23.7142556,
+  "lon": 90.4167806
+ },
+ {
+  "name": "JnU Central Mosque",
+  "kind": "place_of_worship",
+  "lat": 23.7095234,
+  "lon": 90.4107064
+ },
+ {
+  "name": "\u09ae\u09b6\u09c1\u09b0\u09c0\u0996\u09cb\u09b2\u09be \u09a6\u09b0\u09ac\u09be\u09b0 \u09b6\u09b0\u09c0\u09ab",
+  "kind": "place_of_worship",
+  "lat": 23.71384,
+  "lon": 90.420701
+ },
+ {
+  "name": "\u09b6\u09cd\u09b0\u09c0 \u09b6\u09cd\u09b0\u09c0 \u09b6\u09a8\u09bf\u09a6\u09c7\u09ac\u09c7\u09b0 \u09ae\u09a8\u09cd\u09a6\u09bf\u09b0",
+  "kind": "place_of_worship",
+  "lat": 23.7099289,
+  "lon": 90.410769
+ },
+ {
+  "name": "Sri Sri Raksha Kali Mata Temple ~ Shankhari Bazar",
+  "kind": "place_of_worship",
+  "lat": 23.7101071,
+  "lon": 90.4080934
+ },
+ {
+  "name": "Ray Saheb Bazar Boro Masjid",
+  "kind": "place_of_worship",
+  "lat": 23.7139756,
+  "lon": 90.4113563
+ },
+ {
+  "name": "place of worship",
+  "kind": "place_of_worship",
+  "lat": 23.7127055,
+  "lon": 90.4051539
+ },
+ {
+  "name": "Kassabtuly Mosque",
+  "kind": "place_of_worship",
+  "lat": 23.7160394,
+  "lon": 90.4051172
+ },
+ {
+  "name": "St. Francis Xavier's Girls High School",
+  "kind": "school",
+  "lat": 23.7086009,
+  "lon": 90.4134844
+ },
+ {
+  "name": "place of worship",
+  "kind": "place_of_worship",
+  "lat": 23.7109048,
+  "lon": 90.4237787
+ },
+ {
+  "name": "Anjuman Mufidul Islam Balika Home (yatimkhana)",
+  "kind": "school",
+  "lat": 23.7025232,
+  "lon": 90.4206122
+ },
+ {
+  "name": "West Gandaria Mosque",
+  "kind": "place_of_worship",
+  "lat": 23.7072934,
+  "lon": 90.4212072
+ },
+ {
+  "name": "Anjuman Jamilur Rahman Islamiya Junior High School",
+  "kind": "school",
+  "lat": 23.7031333,
+  "lon": 90.4213393
+ },
+ {
+  "name": "Riyazul Janna Jame Mosque",
+  "kind": "place_of_worship",
+  "lat": 23.706531,
+  "lon": 90.4213122
+ },
+ {
+  "name": "Loharpul Jame Mosque",
+  "kind": "place_of_worship",
+  "lat": 23.7020253,
+  "lon": 90.4202867
+ },
+ {
+  "name": "Gandaria Jame Mosque",
+  "kind": "place_of_worship",
+  "lat": 23.7042921,
+  "lon": 90.42344
+ },
+ {
+  "name": "school",
+  "kind": "school",
+  "lat": 23.7010557,
+  "lon": 90.4239156
+ },
+ {
+  "name": "Gandaria Govt. Girl's Primary School",
+  "kind": "school",
+  "lat": 23.702801,
+  "lon": 90.42307
+ },
+ {
+  "name": "Gandaria Ideal School & College",
+  "kind": "school",
+  "lat": 23.7058222,
+  "lon": 90.4230446
+ },
+ {
+  "name": "Gandaria Mohila Samiti Government Primary School",
+  "kind": "school",
+  "lat": 23.7049216,
+  "lon": 90.4236984
+ },
+ {
+  "name": "Meyor Mohammad Sayed Khokon Center",
+  "kind": "community_centre",
+  "lat": 23.7076971,
+  "lon": 90.4227922
+ },
+ {
+  "name": "place of worship",
+  "kind": "place_of_worship",
+  "lat": 23.7090843,
+  "lon": 90.4246171
+ },
+ {
+  "name": "school",
+  "kind": "school",
+  "lat": 23.7015813,
+  "lon": 90.4231022
+ },
+ {
+  "name": "place of worship",
+  "kind": "place_of_worship",
+  "lat": 23.7013715,
+  "lon": 90.4235267
+ },
+ {
+  "name": "place of worship",
+  "kind": "place_of_worship",
+  "lat": 23.7019135,
+  "lon": 90.4239779
+ },
+ {
+  "name": "Manija Rahman Girls School",
+  "kind": "school",
+  "lat": 23.7038508,
+  "lon": 90.4226794
+ },
+ {
+  "name": "place of worship",
+  "kind": "place_of_worship",
+  "lat": 23.706489,
+  "lon": 90.4250477
+ },
+ {
+  "name": "school",
+  "kind": "school",
+  "lat": 23.7059053,
+  "lon": 90.4211787
+ },
+ {
+  "name": "school",
+  "kind": "school",
+  "lat": 23.7052876,
+  "lon": 90.4205611
+ },
+ {
+  "name": "Loarpool Jam-e-Mashjid",
+  "kind": "place_of_worship",
+  "lat": 23.7047223,
+  "lon": 90.4200226
+ },
+ {
+  "name": "Habibiya Jame Masjid",
+  "kind": "place_of_worship",
+  "lat": 23.7081858,
+  "lon": 90.4207385
+ },
+ {
+  "name": "school",
+  "kind": "school",
+  "lat": 23.7042452,
+  "lon": 90.4233
+ },
+ {
+  "name": "Durga Mandir",
+  "kind": "place_of_worship",
+  "lat": 23.7043392,
+  "lon": 90.4197991
+ },
+ {
+  "name": "Loharpul Sorkari Primary School",
+  "kind": "school",
+  "lat": 23.7022355,
+  "lon": 90.4203332
+ },
+ {
+  "name": "\u09b8\u09b0\u09be\u09ab\u09a4\u0997\u099e\u09cd\u099c \u09ab\u09cd\u09b0\u09bf \u09ab\u09cb\u09b0\u0995\u09be\u09a8\u09bf\u09df\u09be \u09ae\u09be\u09a6\u09cd\u09b0\u09be\u09b8\u09be",
+  "kind": "place_of_worship",
+  "lat": 23.7029845,
+  "lon": 90.420751
+ },
+ {
+  "name": "Jamalul Koryan Masque",
+  "kind": "place_of_worship",
+  "lat": 23.7012388,
+  "lon": 90.4223743
+ },
+ {
+  "name": "Sree Sree Jomuna Mau Asrom Mondir",
+  "kind": "place_of_worship",
+  "lat": 23.7003538,
+  "lon": 90.4247024
+ },
+ {
+  "name": "Boroitola Mazar Jame Moshjid",
+  "kind": "place_of_worship",
+  "lat": 23.701154,
+  "lon": 90.4228048
+ },
+ {
+  "name": "Dhalkanagar Golap Jame Masjid",
+  "kind": "place_of_worship",
+  "lat": 23.7004268,
+  "lon": 90.422071
+ },
+ {
+  "name": "Namapara Mosjid",
+  "kind": "place_of_worship",
+  "lat": 23.7075769,
+  "lon": 90.4241362
+ },
+ {
+  "name": "Shapla Kinder Garten",
+  "kind": "school",
+  "lat": 23.7050902,
+  "lon": 90.423778
+ },
+ {
+  "name": "Sonali Nupur Community Center",
+  "kind": "community_centre",
+  "lat": 23.7058608,
+  "lon": 90.4204707
+ },
+ {
+  "name": "Gandaria High School",
+  "kind": "school",
+  "lat": 23.7015344,
+  "lon": 90.4244242
+ },
+ {
+  "name": "place of worship",
+  "kind": "place_of_worship",
+  "lat": 23.7009756,
+  "lon": 90.420542
+ },
+ {
+  "name": "Mazar",
+  "kind": "place_of_worship",
+  "lat": 23.7009451,
+  "lon": 90.4210402
+ },
+ {
+  "name": "Baba shoyod Road",
+  "kind": "place_of_worship",
+  "lat": 23.7026941,
+  "lon": 90.4208356
+ },
+ {
+  "name": "World sain intarnational School",
+  "kind": "school",
+  "lat": 23.7062841,
+  "lon": 90.4209326
+ },
+ {
+  "name": "place of worship",
+  "kind": "place_of_worship",
+  "lat": 23.7093187,
+  "lon": 90.4188607
+ },
+ {
+  "name": "Kisholy Kochi Kachar Mela",
+  "kind": "school",
+  "lat": 23.7031792,
+  "lon": 90.4235725
+ },
+ {
+  "name": "Oroni Juboshongho",
+  "kind": "community_centre",
+  "lat": 23.7042309,
+  "lon": 90.4203785
+ },
+ {
+  "name": "place of worship",
+  "kind": "place_of_worship",
+  "lat": 23.7164134,
+  "lon": 90.4212749
+ },
+ {
+  "name": "Kamrunnesa Govt Girls School",
+  "kind": "school",
+  "lat": 23.7189936,
+  "lon": 90.4226269
+ },
+ {
+  "name": "Tikatuli Mosque and Madrasa( Arabic Educational Institute)",
+  "kind": "place_of_worship",
+  "lat": 23.719467,
+  "lon": 90.4205431
+ },
+ {
+  "name": "\u09a8\u09c2\u09b0 \u09ae\u09b8\u099c\u09bf\u09a6",
+  "kind": "place_of_worship",
+  "lat": 23.7167911,
+  "lon": 90.4172392
+ },
+ {
+  "name": "Gouri Moth Mondir",
+  "kind": "place_of_worship",
+  "lat": 23.7141334,
+  "lon": 90.4189495
+ },
+ {
+  "name": "Bangladesh Oxford International School",
+  "kind": "school",
+  "lat": 23.7139185,
+  "lon": 90.4187098
+ },
+ {
+  "name": "Narinda Govt. Primary Girls School",
+  "kind": "school",
+  "lat": 23.7130311,
+  "lon": 90.4185815
+ },
+ {
+  "name": "Baitul Khayer Jame Moshjid",
+  "kind": "place_of_worship",
+  "lat": 23.7176484,
+  "lon": 90.4243165
+ },
+ {
+  "name": "Narinda Govt. High School",
+  "kind": "school",
+  "lat": 23.7146774,
+  "lon": 90.4209509
+ },
+ {
+  "name": "place of worship",
+  "kind": "place_of_worship",
+  "lat": 23.713582,
+  "lon": 90.4232171
+ },
+ {
+  "name": "Sri Sri Jagatbondhu Mahaprokash Math",
+  "kind": "place_of_worship",
+  "lat": 23.7182227,
+  "lon": 90.4205547
+ },
+ {
+  "name": "Holy Cross Church",
+  "kind": "place_of_worship",
+  "lat": 23.7084483,
+  "lon": 90.4137794
+ },
+ {
+  "name": "St. Gregory's High School and College",
+  "kind": "school",
+  "lat": 23.7082141,
+  "lon": 90.4142343
+ },
+ {
+  "name": "Kobbad Sardar School",
+  "kind": "school",
+  "lat": 23.7075479,
+  "lon": 90.4232035
+ },
+ {
+  "name": "Meyor shaed khokon community center, Gandariya dhupkhola Dhaka -1204",
+  "kind": "community_centre",
+  "lat": 23.7077428,
+  "lon": 90.4227735
+ },
+ {
+  "name": "Jorip Bepari Jame Masjid ~ Narinda",
+  "kind": "place_of_worship",
+  "lat": 23.7131617,
+  "lon": 90.418639
+ },
+ {
+  "name": "Dhaka Central Girls High School",
+  "kind": "school",
+  "lat": 23.7087366,
+  "lon": 90.4145031
+ },
+ {
+  "name": "St Thomas Church",
+  "kind": "place_of_worship",
+  "lat": 23.7101938,
+  "lon": 90.4122503
+ },
+ {
+  "name": "Dholaikhal Jame Masjid",
+  "kind": "place_of_worship",
+  "lat": 23.7137875,
+  "lon": 90.4136422
+ },
+ {
+  "name": "St Thomas Church",
+  "kind": "place_of_worship",
+  "lat": 23.7101926,
+  "lon": 90.4122319
+ },
+ {
+  "name": "\u09b2\u0995\u09cd\u09b7\u09cd\u09ae\u09c0\u09ac\u09be\u099c\u09be\u09b0 \u09b6\u09be\u09b9\u09c0 \u09ae\u09b8\u099c\u09bf\u09a6",
+  "kind": "place_of_worship",
+  "lat": 23.7088055,
+  "lon": 90.4135297
+ },
+ {
+  "name": "St. Francis Xavier's Girls' School & College, Dhaka",
+  "kind": "school",
+  "lat": 23.7083492,
+  "lon": 90.4134728
+ },
+ {
+  "name": "Dhaka Govt. Muslim High School",
+  "kind": "school",
+  "lat": 23.7085938,
+  "lon": 90.4129696
+ },
+ {
+  "name": "K.L.Jubilee High School & College",
+  "kind": "school",
+  "lat": 23.7053765,
+  "lon": 90.4128148
+ },
+ {
+  "name": "Banglabazar Govt Girls' High School",
+  "kind": "school",
+  "lat": 23.7070302,
+  "lon": 90.4119235
+ },
+ {
+  "name": "Dhaka Baptist Church",
+  "kind": "place_of_worship",
+  "lat": 23.7076821,
+  "lon": 90.4112315
+ },
+ {
+  "name": "\u09ad\u09cb\u09b2\u09be \u09a8\u09a8\u09cd\u09a6 \u0997\u09bf\u09b0\u09bf \u09ae\u09a8\u09cd\u09a6\u09bf\u09b0",
+  "kind": "place_of_worship",
+  "lat": 23.7195806,
+  "lon": 90.4244657
+ },
+ {
+  "name": "\u09b6\u09c7\u09b0 \u0987 \u09ac\u09be\u0982\u09b2\u09be \u09ac\u09be\u09b2\u09bf\u0995\u09be \u09ae\u09b9\u09be\u09ac\u09bf\u09a6\u09cd\u09af\u09be\u09b2\u09af\u09bc",
+  "kind": "school",
+  "lat": 23.7205789,
+  "lon": 90.4185877
+ },
+ {
+  "name": "Boston International School",
+  "kind": "school",
+  "lat": 23.7144991,
+  "lon": 90.4187199
+ },
+ {
+  "name": "\u09a8\u09be\u09b0\u09bf\u09a8\u09cd\u09a6\u09be \u0995\u09c7. \u098f. \u09b9\u09be\u09ae\u09bf\u09a6 \u09b8\u09b0\u0995\u09be\u09b0\u09bf \u09aa\u09cd\u09b0\u09be\u09a5\u09ae\u09bf\u0995 \u09ac\u09bf\u09a6\u09cd\u09af\u09be\u09b2\u09af\u09bc",
+  "kind": "school",
+  "lat": 23.7144989,
+  "lon": 90.4190153
+ },
+ {
+  "name": "St. Joseph International School",
+  "kind": "school",
+  "lat": 23.7131852,
+  "lon": 90.4215329
+ },
+ {
+  "name": "\u09ae\u09b6\u09c1\u09b0\u09c0\u0996\u09cb\u09b2\u09be \u09b6\u09be\u09b9 \u09b8\u09be\u09b9\u09c7\u09ac \u09ac\u09be\u09a1\u09bc\u09c0 \u09ae\u09b8\u099c\u09bf\u09a6",
+  "kind": "place_of_worship",
+  "lat": 23.7136854,
+  "lon": 90.4207162
+ },
+ {
+  "name": "\u09ae\u09b6\u09c1\u09b0\u09c0\u0996\u09cb\u09b2\u09be \u09a6\u09b0\u09ac\u09be\u09b0 \u09b6\u09b0\u09c0\u09ab",
+  "kind": "school",
+  "lat": 23.7135889,
+  "lon": 90.4207383
+ },
+ {
+  "name": "Wari Cemetery of Holy Cross Church",
+  "kind": "place_of_worship",
+  "lat": 23.7149028,
+  "lon": 90.4195799
+ },
+ {
+  "name": "ISCON",
+  "kind": "place_of_worship",
+  "lat": 23.7138524,
+  "lon": 90.4227866
+ },
+ {
+  "name": "ISCON, Dhaka",
+  "kind": "place_of_worship",
+  "lat": 23.7140929,
+  "lon": 90.422827
+ },
+ {
+  "name": "place of worship",
+  "kind": "place_of_worship",
+  "lat": 23.7195575,
+  "lon": 90.4243882
+ }
+]

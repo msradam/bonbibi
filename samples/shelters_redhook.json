@@ -1,0 +1,122 @@
+[
+ {
+  "name": "Red Hook Gospel Tabernacle",
+  "kind": "place_of_worship",
+  "lat": 40.6747137,
+  "lon": -74.0130669
+ },
+ {
+  "name": "Summit Academy Charter School",
+  "kind": "school",
+  "lat": 40.6775735,
+  "lon": -74.0047534
+ },
+ {
+  "name": "Red Hook Neighborhood School",
+  "kind": "school",
+  "lat": 40.6776204,
+  "lon": -74.0049212
+ },
+ {
+  "name": "Saint Paul's Episcopal Church of Brooklyn",
+  "kind": "place_of_worship",
+  "lat": 40.6817016,
+  "lon": -73.9979943
+ },
+ {
+  "name": "Mary McDowell Friends Middle School",
+  "kind": "school",
+  "lat": 40.681888,
+  "lon": -74.0013975
+ },
+ {
+  "name": "Sacred Hearts of Jesus and Mary and Saint Stephen's Church",
+  "kind": "place_of_worship",
+  "lat": 40.6821765,
+  "lon": -74.0018691
+ },
+ {
+  "name": "International School of Brooklyn",
+  "kind": "school",
+  "lat": 40.6765379,
+  "lon": -73.9982777
+ },
+ {
+  "name": "St. Mary Star of the Sea Roman Catholic Church",
+  "kind": "place_of_worship",
+  "lat": 40.6766729,
+  "lon": -73.9980213
+ },
+ {
+  "name": "Iglesia Pentecostal de Jesucristo",
+  "kind": "place_of_worship",
+  "lat": 40.6756401,
+  "lon": -74.0135691
+ },
+ {
+  "name": "school",
+  "kind": "school",
+  "lat": 40.6778443,
+  "lon": -74.0048249
+ },
+ {
+  "name": "Kingdom Hall of Jehovah's Witnesses",
+  "kind": "place_of_worship",
+  "lat": 40.6775953,
+  "lon": -74.0059904
+ },
+ {
+  "name": "Calvary Baptist Church of Red Hook",
+  "kind": "place_of_worship",
+  "lat": 40.6763895,
+  "lon": -74.0045808
+ },
+ {
+  "name": "Beit Da'ath Chokmah Binah",
+  "kind": "place_of_worship",
+  "lat": 40.6728225,
+  "lon": -73.9996823
+ },
+ {
+  "name": "Movimiento Iglesia Cristiana Pentecostal",
+  "kind": "place_of_worship",
+  "lat": 40.682054,
+  "lon": -74.0036124
+ },
+ {
+  "name": "Public School K146 Brooklyn New School",
+  "kind": "school",
+  "lat": 40.679581,
+  "lon": -74.0020969
+ },
+ {
+  "name": "Public School 30",
+  "kind": "school",
+  "lat": 40.6782219,
+  "lon": -74.0135159
+ },
+ {
+  "name": "South Brooklyn Community High School",
+  "kind": "school",
+  "lat": 40.6777951,
+  "lon": -74.0141501
+ },
+ {
+  "name": "Public School 15 Patrick F. Daly",
+  "kind": "school",
+  "lat": 40.6770888,
+  "lon": -74.0118591
+ },
+ {
+  "name": "BASIS Independent Brooklyn",
+  "kind": "school",
+  "lat": 40.6731356,
+  "lon": -74.0090663
+ },
+ {
+  "name": "Visitation of the Blessed Virgin Mary Roman Catholic Church",
+  "kind": "place_of_worship",
+  "lat": 40.6788466,
+  "lon": -74.0088099
+ }
+]

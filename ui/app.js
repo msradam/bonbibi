@@ -110,6 +110,11 @@ async function poll() {
     chip($("chip-vehicle"), s.routes.vehicle);
     $("route-wheel").textContent = s.routes.wheelchair.summary;
     $("route-vehicle").textContent = s.routes.vehicle.summary;
+  } else {
+    chip($("chip-wheel"), null);
+    chip($("chip-vehicle"), null);
+    $("route-wheel").textContent = "Tap the map to route a person to shelter.";
+    $("route-vehicle").textContent = "Tap the map to route a person to shelter.";
   }
 
   if (s.guidance) $("guidance").textContent = s.guidance;
@@ -118,6 +123,10 @@ async function poll() {
   $("m-steps").textContent = s.gpu_steps ? s.gpu_steps.toLocaleString() : "—";
   $("m-time").textContent = s.elapsed || "—";
 
+  if (s.done && !s.routes && $("phase").textContent === "Done.") {
+    $("phase").textContent =
+      "Done. Tap the map at a person's location to guide them to shelter.";
+  }
   if (s.done) {
     clearInterval(polling);
     polling = null;
@@ -146,6 +155,25 @@ $("speak").addEventListener("click", () => {
   speechSynthesis.speak(u);
   btn.setAttribute("aria-pressed", "true");
   btn.textContent = "Stop speaking";
+});
+
+window.addEventListener("message", async (e) => {
+  if (!e.data || e.data.type !== "bonbibi:tap") return;
+  $("phase").textContent = "Routing from their location...";
+  $("guidance").textContent = "";
+  $("guidance").classList.add("streaming");
+  if (!polling) polling = setInterval(poll, 400);
+  const r = await fetch("/api/locate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ lat: e.data.lat, lon: e.data.lon }),
+  });
+  if (!r.ok) {
+    clearInterval(polling);
+    polling = null;
+    $("guidance").classList.remove("streaming");
+    $("phase").textContent = (await r.json()).detail || "Could not route from there.";
+  }
 });
 
 loadAreas();

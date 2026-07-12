@@ -27,6 +27,7 @@ import threading
 import time
 
 import numpy as np
+import routing
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -40,8 +41,11 @@ LIVE = f"{RES}/static/live"
 UI = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ui")
 VKFLOOD_ENV = {"STRIP": "2", "FUSED": "1", "FLUX_SPV": "fused2s.spv"}
 LLAMA_BIN = f"{RES}/llama.cpp/build-vulkan/bin/llama-completion"
+# Mobility thresholds (metres of standing water); see HACKATHON.md for the
+# literature backing. Config-driven so findings can adjust them in one place.
+THRESHOLDS = {"wheelchair": 0.5, "vehicle": 2.0}
+
 TIME_RE = re.compile(r"time=([0-9.]+)s")
-CELL_RE = re.compile(r"\(r(\d+),c(\d+)\)")
 
 app = FastAPI(title="Bonbibi")
 os.makedirs(LIVE, exist_ok=True)
@@ -92,11 +96,15 @@ def band_coverage(water: np.ndarray) -> dict:
     }
 
 
-def publish(bbox, water: np.ndarray | None, routes: dict | None):
+def publish(
+    bbox, water: np.ndarray | None, routes: dict | None, origin=None, shelters=None
+):
     la0, la1, lo0, lo1 = bbox
     state = {
         "v": time.time_ns(),
         "flood": water is not None,
+        "origin": origin,
+        "shelters": shelters or [],
         "corners": [[lo0, la1], [lo1, la1], [lo1, la0], [lo0, la0]],
         "routes": {
             "type": "FeatureCollection",
@@ -123,25 +131,21 @@ def publish(bbox, water: np.ndarray | None, routes: dict | None):
     os.replace(f"{LIVE}/state.json.tmp", f"{LIVE}/state.json")
 
 
-def route(threshold: float, bbox):
-    p = subprocess.run(
-        ["python3", "route.py", str(threshold)],
-        cwd=RES,
-        capture_output=True,
-        text=True,
-        timeout=60,
-    )
-    out = p.stdout.strip()
-    summary = out.splitlines()[0] if out else "(no route output)"
-    la0, la1, lo0, lo1 = bbox
-    coords = [
-        [
-            lo0 + (lo1 - lo0) * (int(c) + 0.5) / GRID,
-            la1 - (la1 - la0) * (int(r) + 0.5) / GRID,
-        ]
-        for r, c in CELL_RE.findall(out)
-    ]
-    return summary, coords
+def load_shelters(area: str) -> list:
+    path = f"{RES}/static/shelters_{area}.json"
+    if not os.path.exists(path):
+        return []
+    with open(path) as f:
+        return json.load(f)
+
+
+def shelter_status(shelters: list, depth, bbox) -> list:
+    out = []
+    for s in shelters:
+        r, c = routing.to_cell(s["lat"], s["lon"], bbox)
+        d = float(depth[r * routing.SZ + c]) if depth is not None else 0.0
+        out.append({**s, "depth_m": round(d, 2), "flooded": d > 0.05})
+    return out
 
 
 def guidance_text(raw: str) -> str:
@@ -163,6 +167,74 @@ def gpu_loop(stop: threading.Event, rain: float, dem: str):
                 RUN["gpu_sps"] = round(4000.0 / float(m.group(1)))
 
 
+LAST: dict = {}
+
+ADVISORY_INSTRUCTION = (
+    "Write a short area advisory based only on the documents, addressed "
+    "to residents by capability: one sentence for people who cannot wade "
+    "(wheelchair users and others), one for drivers, one on shelters, "
+    "using the water depths and coverage from the documents."
+)
+
+PERSON_INSTRUCTION = (
+    "Write three short sentences based only on the documents: first, what "
+    "this person should do right now if they use a wheelchair, using their "
+    "route result; second, what they should do if they can drive, using "
+    "that route result; third, one safety note from the flood assessment."
+)
+
+
+def flood_doc(area, rain, steps, cov) -> dict:
+    return {
+        "doc_id": 1,
+        "title": f"Flood assessment for {area}",
+        "text": (
+            f"Simulated storm over {area}: rain {rain} m per cell per "
+            f"step for {steps} steps. Deepest water {cov.get('max_depth_m', '?')} m. "
+            f"Coverage: {cov.get('shallow_pct', '?')}% of the area under shallow "
+            f"water below 0.5 m (passable for everyone), "
+            f"{cov.get('vehicle_pct', '?')}% between 0.5 and 2 m (vehicles only), "
+            f"{cov.get('deep_pct', '?')}% deeper than 2 m (impassable)."
+        ),
+    }
+
+
+def narrate(docs: list, instruction: str):
+    """Stream Granite's grounded composition into RUN['guidance']."""
+    payload = {
+        "stream": True,
+        "temperature": 0,
+        "max_tokens": 180,
+        "chat_template_kwargs": {"documents": docs},
+        "messages": [
+            {
+                "role": "system",
+                "content": (
+                    "You are Bonbibi, an emergency flood-guidance assistant. "
+                    "Use plain, calm language a person in an emergency can "
+                    "follow. Never invent street names, places, or facts."
+                ),
+            },
+            {"role": "user", "content": instruction},
+        ],
+    }
+    req = urllib.request.Request(
+        "http://127.0.0.1:8081/v1/chat/completions",
+        data=json.dumps(payload).encode(),
+        headers={"Content-Type": "application/json"},
+    )
+    with urllib.request.urlopen(req, timeout=300) as r:
+        for raw in r:
+            line = raw.decode(errors="replace").strip()
+            if not line.startswith("data: ") or line == "data: [DONE]":
+                continue
+            delta = json.loads(line[6:])["choices"][0].get("delta", {})
+            piece = delta.get("content") or ""
+            if piece:
+                with _lock:
+                    RUN["guidance"] = (RUN.get("guidance") or "") + piece
+
+
 def do_run(p: RunParams):
     bbox = dem_bbox(p.dem)
     area = os.path.basename(p.dem).replace("dem_", "").replace(".txt", "")
@@ -170,114 +242,64 @@ def do_run(p: RunParams):
         with _lock:
             RUN.update(phase="flood", frame=0, frames=p.frames)
         water = None
+        area_shelters = load_shelters(area)
         for i in range(1, p.frames + 1):
             n = max(1, p.steps * i // p.frames)
             run_flood(n, p.rain, p.dem, dump="/tmp/demo_depth.bin")
             water = np.fromfile("/tmp/demo_depth.bin", dtype=np.float32).reshape(SZ, SZ)
-            publish(bbox, water, None)
+            publish(
+                bbox,
+                water,
+                None,
+                shelters=shelter_status(area_shelters, water.reshape(-1), bbox),
+            )
             with _lock:
                 RUN.update(frame=i, coverage=band_coverage(water))
             time.sleep(0.4)
 
         with _lock:
             RUN["phase"] = "routing"
-        wheel_txt, wheel_path = route(0.5, bbox)
-        car_txt, car_path = route(2.0, bbox)
-        publish(bbox, water, {"wheelchair": wheel_path, "vehicle": car_path})
+        depth = water.reshape(-1)
+        shelters = shelter_status(area_shelters, depth, bbox)
+        dry = sum(1 for s in shelters if not s["flooded"])
+        publish(bbox, water, None, shelters=shelters)
+        LAST.update(
+            depth=depth,
+            bbox=bbox,
+            area=area,
+            shelters=shelters,
+            rain=p.rain,
+            steps=p.steps,
+        )
         with _lock:
-            RUN["routes"] = {
-                "wheelchair": {"summary": wheel_txt, "possible": bool(wheel_path)},
-                "vehicle": {"summary": car_txt, "possible": bool(car_path)},
-            }
+            RUN["shelters"] = {"total": len(shelters), "dry": dry}
+            RUN["routes"] = None
 
         with _lock:
             cov = RUN.get("coverage") or {}
             RUN["phase"] = "narrating"
         docs = [
-            {
-                "doc_id": 1,
-                "title": f"Flood assessment for {area}",
-                "text": (
-                    f"Simulated storm over {area}: rain {p.rain} m per cell per "
-                    f"step for {p.steps} steps. Deepest water {cov.get('max_depth_m', '?')} m. "
-                    f"Coverage: {cov.get('shallow_pct', '?')}% of the area under shallow "
-                    f"water below 0.5 m (passable for everyone), "
-                    f"{cov.get('vehicle_pct', '?')}% between 0.5 and 2 m (vehicles only), "
-                    f"{cov.get('deep_pct', '?')}% deeper than 2 m (impassable)."
-                ),
-            },
+            flood_doc(area, p.rain, p.steps, cov),
             {
                 "doc_id": 2,
-                "title": "Route result: wheelchair user (limit 0.5 m)",
-                "text": f"The routing engine computed: {wheel_txt}. "
-                + (
-                    "Recommended action: a safe crossing exists, so leave now "
-                    "while the route is open; conditions can worsen quickly."
-                    if wheel_path
-                    else "Recommended action: there is no safe route, so stay "
-                    "where you are, move to the highest point nearby, signal "
-                    "for help, and do not enter the water."
-                ),
-            },
-            {
-                "doc_id": 3,
-                "title": "Route result: vehicle (limit 2.0 m)",
-                "text": f"The routing engine computed: {car_txt}. "
-                + (
-                    "Recommended action: a safe crossing exists, so drive it "
-                    "now while the route is open; never drive into water of "
-                    "unknown depth."
-                    if car_path
-                    else "Recommended action: there is no safe route, so do "
-                    "not drive; stay where you are and signal for help."
+                "title": f"Shelter status in {area}",
+                "text": (
+                    "No shelter candidates are known for this area."
+                    if not shelters
+                    else f"All {len(shelters)} known shelter candidates are standing in floodwater."
+                    if dry == 0
+                    else f"All {len(shelters)} known shelter candidates are on dry ground."
+                    if dry == len(shelters)
+                    else f"{dry} of {len(shelters)} known shelter candidates are on dry "
+                    f"ground; the other {len(shelters) - dry} are standing in floodwater."
                 ),
             },
         ]
-        payload = {
-            "stream": True,
-            "temperature": 0,
-            "max_tokens": 180,
-            "chat_template_kwargs": {"documents": docs},
-            "messages": [
-                {
-                    "role": "system",
-                    "content": (
-                        "You are Bonbibi, an emergency flood-guidance assistant. "
-                        "Use plain, calm language a person in an emergency can "
-                        "follow. Never invent street names, places, or facts."
-                    ),
-                },
-                {
-                    "role": "user",
-                    "content": (
-                        "Based only on the documents, write three short "
-                        "sentences: first, what the wheelchair user should do "
-                        "right now given their route result; second, what the "
-                        "driver should do right now given their route result; "
-                        "third, one safety note from the flood assessment."
-                    ),
-                },
-            ],
-        }
         stop = threading.Event()
         threading.Thread(
             target=gpu_loop, args=(stop, p.rain, p.dem), daemon=True
         ).start()
-        req = urllib.request.Request(
-            "http://127.0.0.1:8081/v1/chat/completions",
-            data=json.dumps(payload).encode(),
-            headers={"Content-Type": "application/json"},
-        )
-        with urllib.request.urlopen(req, timeout=300) as r:
-            for raw in r:
-                line = raw.decode(errors="replace").strip()
-                if not line.startswith("data: ") or line == "data: [DONE]":
-                    continue
-                delta = json.loads(line[6:])["choices"][0].get("delta", {})
-                piece = delta.get("content") or ""
-                if piece:
-                    with _lock:
-                        RUN["guidance"] = (RUN.get("guidance") or "") + piece
+        narrate(docs, ADVISORY_INSTRUCTION)
         stop.set()
         with _lock:
             RUN.update(phase="done", done=True)
@@ -333,6 +355,108 @@ def start_run(p: RunParams):
         )
     threading.Thread(target=do_run, args=(p,), daemon=True).start()
     return {"ok": True}
+
+
+class LocateParams(BaseModel):
+    lat: float
+    lon: float
+
+
+@app.post("/api/locate")
+def locate(q: LocateParams):
+    with _lock:
+        if RUN.get("running"):
+            raise HTTPException(
+                status_code=409, detail="A storm is running; wait for it."
+            )
+    if LAST.get("depth") is None:
+        raise HTTPException(status_code=400, detail="Run a storm first.")
+    depth, bbox, area = LAST["depth"], LAST["bbox"], LAST["area"]
+    shelters = LAST["shelters"]
+    if not shelters:
+        raise HTTPException(
+            status_code=400, detail=f"No shelter candidates known for {area}."
+        )
+    origin = routing.to_cell(q.lat, q.lon, bbox)
+    goals = [routing.to_cell(s["lat"], s["lon"], bbox) for s in shelters]
+    here_depth = float(depth[origin[0] * routing.SZ + origin[1]])
+
+    results, paths, docs = {}, {}, []
+    for name, thr in THRESHOLDS.items():
+        idx, path = routing.route_to_shelter(depth, thr, origin, goals)
+        if idx is not None:
+            s = shelters[idx]
+            dist = routing.path_length_m(path, bbox)
+            results[name] = {
+                "possible": True,
+                "shelter": s["name"],
+                "kind": s["kind"],
+                "distance_m": dist,
+                "summary": f"Nearest reachable shelter: {s['name']} ({s['kind']}), about {dist} m away.",
+            }
+            paths[name] = [
+                routing.to_lonlat(r, c, bbox) for r, c in path[::4] + [path[-1]]
+            ]
+            action = (
+                "Recommended action: a safe path exists, so go now while it "
+                "is open; conditions can worsen quickly."
+                if name == "wheelchair"
+                else "Recommended action: a safe driving path exists, so "
+                "drive it now; never drive into water of unknown depth."
+            )
+            text = (
+                f"From this person's location, the nearest shelter reachable "
+                f"without crossing water deeper than {thr} m is {s['name']} "
+                f"({s['kind']}), about {dist} m away. {action}"
+            )
+        else:
+            results[name] = {
+                "possible": False,
+                "summary": f"No shelter is reachable without crossing water deeper than {thr} m.",
+            }
+            text = (
+                f"No shelter is reachable from this person's location without "
+                f"crossing water deeper than {thr} m; they are stranded for "
+                f"this mobility profile. Recommended action: stay in place, "
+                f"move to the highest point nearby, signal for help, and do "
+                f"not enter the water."
+            )
+        docs.append(
+            {
+                "doc_id": len(docs) + 2,
+                "title": f"Route result: {name} (limit {thr} m)",
+                "text": text,
+            }
+        )
+    docs.insert(
+        0, flood_doc(area, LAST["rain"], LAST["steps"], band_coverage(LAST["depth"]))
+    )
+    if here_depth > 0.05:
+        docs.append(
+            {
+                "doc_id": len(docs) + 1,
+                "title": "Water at this person's location",
+                "text": f"The water at their own location is {here_depth:.2f} m deep right now.",
+            }
+        )
+
+    publish(
+        bbox,
+        LAST["depth"].reshape(routing.SZ, routing.SZ),
+        paths,
+        origin=[q.lon, q.lat],
+        shelters=shelters,
+    )
+    with _lock:
+        RUN.update(
+            running=True, phase="narrating", done=False, guidance="", routes=results
+        )
+    try:
+        narrate(docs, PERSON_INSTRUCTION)
+    finally:
+        with _lock:
+            RUN.update(phase="done", done=True, running=False)
+    return {"ok": True, "routes": results}
 
 
 @app.get("/api/state")

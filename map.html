@@ -48,7 +48,17 @@ const map = new maplibregl.Map({
 });
 
 let cur = -1;
+let originMarker = null;
+map.on("click", (e) => {
+  parent.postMessage({ type: "bonbibi:tap", lon: e.lngLat.lng, lat: e.lngLat.lat }, "*");
+});
 map.on("load", () => {
+  map.addSource("shelters", { type: "geojson",
+    data: { type: "FeatureCollection", features: [] } });
+  map.addLayer({ id: "shelters", type: "circle", source: "shelters",
+    paint: { "circle-radius": 7, "circle-stroke-width": 2,
+      "circle-stroke-color": "#ffffff",
+      "circle-color": ["case", ["get", "flooded"], "#b3261e", "#1b7f4b"] } });
   map.addSource("routes", { type: "geojson",
     data: { type: "FeatureCollection", features: [] } });
   map.addLayer({ id: "route-casing", type: "line", source: "routes",
@@ -76,6 +86,16 @@ map.on("load", () => {
       }
       map.getSource("routes").setData(st.routes ||
         { type: "FeatureCollection", features: [] });
+      map.getSource("shelters").setData({ type: "FeatureCollection",
+        features: (st.shelters || []).map(s => ({ type: "Feature",
+          properties: { flooded: !!s.flooded, name: s.name },
+          geometry: { type: "Point", coordinates: [s.lon, s.lat] } })) });
+      if (st.origin) {
+        if (!originMarker) {
+          originMarker = new maplibregl.Marker({ color: "#0f4c81" })
+            .setLngLat(st.origin).addTo(map);
+        } else { originMarker.setLngLat(st.origin); }
+      } else if (originMarker) { originMarker.remove(); originMarker = null; }
     } catch (e) { /* state not written yet */ }
   }, 1000);
 });

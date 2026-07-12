@@ -164,6 +164,11 @@ button[disabled] { background: var(--ink-soft); cursor: default; }
 .sw-vehicle { background: var(--band-vehicle); }
 .sw-deep { background: var(--band-deep); }
 .cov { margin-left: auto; color: var(--ink-soft); font-weight: 400; }
+.dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff;
+       box-shadow: 0 0 0 1px rgba(0,0,0,.3); flex: none; }
+.dot-dry { background: var(--passable); }
+.dot-flooded { background: var(--stranded); }
+.hint { margin: var(--s3) 0 0; font-size: 13px; color: var(--ink-soft); }
 
 /* routes */
 .route-card { border-top: 1px solid var(--line); padding: var(--s3) 0; }
