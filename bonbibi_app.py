@@ -191,9 +191,21 @@ PERSON_INSTRUCTION = (
 )
 
 
+THRESHOLDS_DOC = {
+    "doc_id": 1,
+    "title": "Mobility safety limits (still water)",
+    "text": (
+        "Vehicles are unsafe in water above 0.3 m (cars float). Walking is "
+        "unsafe above 0.5 m. Wheelchair users and people who cannot wade are "
+        "unsafe in any standing water above 0.1 m. Able-bodied adults must "
+        "never enter water above 1.2 m."
+    ),
+}
+
+
 def flood_doc(area, rain, steps, cov) -> dict:
     return {
-        "doc_id": 1,
+        "doc_id": 2,
         "title": f"Flood assessment for {area}",
         "text": (
             f"Simulated storm over {area}: rain {rain} m per cell per "
@@ -287,20 +299,10 @@ def do_run(p: RunParams):
             cov = RUN.get("coverage") or {}
             RUN["phase"] = "narrating"
         docs = [
+            THRESHOLDS_DOC,
             flood_doc(area, p.rain, p.steps, cov),
             {
-                "doc_id": 4,
-                "title": "Mobility safety limits (still water)",
-                "text": (
-                    "Vehicles are unsafe in water above 0.3 m (cars float). "
-                    "Walking is unsafe above 0.5 m. Wheelchair users and "
-                    "people who cannot wade are unsafe in any standing water "
-                    "above 0.1 m. Able-bodied adults must never enter water "
-                    "above 1.2 m."
-                ),
-            },
-            {
-                "doc_id": 2,
+                "doc_id": 3,
                 "title": f"Shelter status in {area}",
                 "text": (
                     "No shelter candidates are known for this area."
@@ -445,7 +447,7 @@ def locate(q: LocateParams):
             )
         docs.append(
             {
-                "doc_id": len(docs) + 2,
+                "doc_id": len(docs) + 3,
                 "title": f"Route result: {name} (limit {thr} m)",
                 "text": text,
             }
@@ -453,6 +455,7 @@ def locate(q: LocateParams):
     docs.insert(
         0, flood_doc(area, LAST["rain"], LAST["steps"], band_coverage(LAST["depth"]))
     )
+    docs.insert(0, THRESHOLDS_DOC)
     if here_depth > 0.05:
         docs.append(
             {
