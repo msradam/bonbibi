@@ -1,0 +1,78 @@
+<!doctype html>
+<!-- bonbibi live flood map. Served from Streamlit's static dir as a real
+     page (MapLibre's worker pipeline does not survive srcdoc iframes) and
+     embedded with components.iframe. Polls live/state.json once a second
+     and updates the flood overlay + route lines in place. Fully offline:
+     vector basemap from a local PMTiles extract (fetch_basemap.py). -->
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="maplibre-gl.css">
+<script src="maplibre-gl.js"></script>
+<script src="pmtiles.js"></script>
+<script src="basemaps.js"></script>
+<style>
+html,body{margin:0;height:100%;font:12px sans-serif}
+#map{height:calc(100% - 30px)}
+#legend{height:30px;display:flex;gap:14px;align-items:center;padding:0 6px;flex-wrap:wrap}
+.sw{display:inline-block;width:14px;height:11px;margin-right:3px;vertical-align:-1px}
+</style></head><body>
+<div id="map"></div>
+<div id="legend">
+  <span><span class="sw" style="background:rgba(66,165,245,.55)"></span>&lt;0.5 m: passable (all)</span>
+  <span><span class="sw" style="background:rgba(30,90,200,.7)"></span>0.5&ndash;2 m: vehicle only</span>
+  <span><span class="sw" style="background:rgba(69,39,160,.8)"></span>&gt;2 m: impassable</span>
+  <span style="color:#2e7d32;font-weight:bold">&#9473;</span> wheelchair route
+  <span style="color:#ef6c00;font-weight:bold">&#9473;</span> vehicle route
+</div>
+<script>
+const q = new URLSearchParams(location.search);
+const AREA = q.get("area") || "redhook";
+const BOUNDS = (q.get("bbox") || "-74.02,40.667,-73.998,40.685").split(",").map(Number);
+maplibregl.addProtocol("pmtiles", new pmtiles.Protocol().tile);
+const map = new maplibregl.Map({
+  container: "map",
+  style: {
+    version: 8,
+    glyphs: "basemaps-assets/fonts/{fontstack}/{range}.pbf",
+    sprite: new URL("basemaps-assets/sprites/v4/light", location.href).href,
+    sources: { protomaps: { type: "vector",
+      url: "pmtiles://" + new URL(AREA + ".pmtiles", location.href).href,
+      attribution: "&copy; OpenStreetMap contributors, &copy; Protomaps" } },
+    layers: basemaps.layers("protomaps", basemaps.namedFlavor("light"), { lang: "en" })
+  },
+  bounds: [[BOUNDS[0], BOUNDS[1]], [BOUNDS[2], BOUNDS[3]]],
+  fitBoundsOptions: { padding: 16 }
+});
+
+let cur = -1;
+map.on("load", () => {
+  map.addSource("routes", { type: "geojson",
+    data: { type: "FeatureCollection", features: [] } });
+  map.addLayer({ id: "route-casing", type: "line", source: "routes",
+    paint: { "line-color": "#ffffff", "line-width": 7, "line-opacity": 0.8 } });
+  map.addLayer({ id: "route-wheel", type: "line", source: "routes",
+    filter: ["==", ["get", "profile"], "wheelchair"],
+    paint: { "line-color": "#2e7d32", "line-width": 4 } });
+  map.addLayer({ id: "route-vehicle", type: "line", source: "routes",
+    filter: ["==", ["get", "profile"], "vehicle"],
+    paint: { "line-color": "#ef6c00", "line-width": 4, "line-dasharray": [2, 1] } });
+  setInterval(async () => {
+    try {
+      const st = await (await fetch("live/state.json?ts=" + Date.now(), { cache: "no-store" })).json();
+      if (st.v === cur) return;
+      cur = st.v;
+      if (st.flood) {
+        const url = "live/depth.png?v=" + st.v;
+        if (map.getSource("flood")) {
+          map.getSource("flood").updateImage({ url: url, coordinates: st.corners });
+        } else {
+          map.addSource("flood", { type: "image", url: url, coordinates: st.corners });
+          map.addLayer({ id: "flood", type: "raster", source: "flood",
+            paint: { "raster-opacity": 1.0 } }, "route-casing");
+        }
+      }
+      map.getSource("routes").setData(st.routes ||
+        { type: "FeatureCollection", features: [] });
+    } catch (e) { /* state not written yet */ }
+  }, 1000);
+});
+</script></body></html>
