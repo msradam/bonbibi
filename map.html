@@ -25,6 +25,10 @@ html,body{margin:0;height:100%;font:12px sans-serif}
 </div>
 <script>
 const q = new URLSearchParams(location.search);
+if (q.get("chrome") === "0") {
+  document.getElementById("legend").style.display = "none";
+  document.getElementById("map").style.height = "100%";
+}
 const AREA = q.get("area") || "redhook";
 const BOUNDS = (q.get("bbox") || "-74.02,40.667,-73.998,40.685").split(",").map(Number);
 maplibregl.addProtocol("pmtiles", new pmtiles.Protocol().tile);

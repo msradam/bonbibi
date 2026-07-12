@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>bonbibi — flood console</title>
+<link rel="stylesheet" href="/ui/app.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to controls</a>
+
+<header class="masthead">
+  <p class="wordmark"><span aria-hidden="true">◆</span> bonbibi</p>
+  <p class="tagline">Flood simulation, accessible routing, and spoken guidance on one small board.</p>
+  <p class="badge" role="note" aria-label="Runs without internet: basemap, elevation, and language model are stored on the device">OFFLINE&nbsp;·&nbsp;ON-DEVICE</p>
+</header>
+
+<main id="main" class="console">
+  <section class="map-panel" aria-labelledby="map-h">
+    <h2 id="map-h" class="visually-hidden">Flood map</h2>
+    <iframe id="map" title="Map of the selected area showing simulated flood depth and evacuation routes" src="about:blank"></iframe>
+    <p id="map-alt" class="map-alt">No storm has been run yet. The map shows the selected area with no flooding.</p>
+  </section>
+
+  <aside class="rail" aria-label="Storm controls and results">
+    <form id="storm-form" aria-describedby="phase">
+      <h2>Storm</h2>
+      <div class="field">
+        <label for="area">Area</label>
+        <select id="area" name="area"></select>
+      </div>
+      <div class="field">
+        <label for="rain">Rain intensity <span class="unit">(m per cell per step)</span></label>
+        <div class="slider-row">
+          <input type="range" id="rain" min="0.001" max="0.010" step="0.001" value="0.003"
+                 aria-describedby="rain-out">
+          <output id="rain-out" for="rain" class="num">0.003</output>
+        </div>
+      </div>
+      <div class="field">
+        <label for="steps">Storm length <span class="unit">(simulation steps)</span></label>
+        <div class="slider-row">
+          <input type="range" id="steps" min="100" max="1000" step="100" value="400"
+                 aria-describedby="steps-out">
+          <output id="steps-out" for="steps" class="num">400</output>
+        </div>
+      </div>
+      <button id="run" type="submit">Run the storm</button>
+      <p id="phase" role="status" class="phase">Ready. The GPU is idle.</p>
+    </form>
+
+    <section class="gauge-card" aria-labelledby="gauge-h">
+      <h2 id="gauge-h">Water depth</h2>
+      <div class="gauge-wrap">
+        <div id="gauge" role="img"
+             aria-label="Depth gauge. Deepest simulated water: none yet. Wheelchair limit 0.5 metres, vehicle limit 2.0 metres.">
+          <div class="gauge-track">
+            <div id="gauge-fill" class="gauge-fill"></div>
+            <div class="notch notch-wheel"><span class="num">0.5</span> wheelchair limit</div>
+            <div class="notch notch-vehicle"><span class="num">2.0</span> vehicle limit</div>
+          </div>
+          <div class="gauge-scale" aria-hidden="true">
+            <span class="num">3&nbsp;m</span><span class="num">2</span><span class="num">1</span><span class="num">0</span>
+          </div>
+        </div>
+        <ul class="legend">
+          <li><span class="sw sw-shallow" aria-hidden="true"></span>under 0.5 m — passable for all <span id="cov-shallow" class="num cov"></span></li>
+          <li><span class="sw sw-vehicle" aria-hidden="true"></span>0.5–2 m — vehicle only <span id="cov-vehicle" class="num cov"></span></li>
+          <li><span class="sw sw-deep" aria-hidden="true"></span>over 2 m — impassable <span id="cov-deep" class="num cov"></span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="routes" aria-labelledby="routes-h">
+      <h2 id="routes-h">Routes</h2>
+      <div class="route-card" id="card-wheel">
+        <p class="route-head"><span class="route-line route-line-wheel" aria-hidden="true"></span>
+          Wheelchair <span class="unit">(up to 0.5 m)</span>
+          <span id="chip-wheel" class="chip chip-empty">not computed</span></p>
+        <p id="route-wheel" class="route-text">Run a storm to compute routes.</p>
+      </div>
+      <div class="route-card" id="card-vehicle">
+        <p class="route-head"><span class="route-line route-line-vehicle" aria-hidden="true"></span>
+          Vehicle <span class="unit">(up to 2.0 m)</span>
+          <span id="chip-vehicle" class="chip chip-empty">not computed</span></p>
+        <p id="route-vehicle" class="route-text">Run a storm to compute routes.</p>
+      </div>
+    </section>
+
+    <section class="guidance" aria-labelledby="guide-h">
+      <h2 id="guide-h">Guidance <span class="unit">(Granite 4.0 1B, on the CPU)</span></h2>
+      <p id="guidance" aria-live="polite">Once routes are computed, plain-language guidance is narrated here — while the GPU keeps simulating.</p>
+      <button id="speak" type="button" aria-pressed="false" hidden>Speak guidance</button>
+    </section>
+  </aside>
+</main>
+
+<footer class="engine-room">
+  <dl class="stats">
+    <div class="stat"><dt>GPU flood throughput</dt><dd><span id="m-sps" class="num">—</span> <span class="unit">steps/s</span></dd></div>
+    <div class="stat"><dt>GPU steps during narration</dt><dd><span id="m-steps" class="num">—</span></dd></div>
+    <div class="stat"><dt>Run time</dt><dd><span id="m-time" class="num">—</span> <span class="unit">s</span></dd></div>
+  </dl>
+  <p class="colophon">Raspberry Pi 5 · V3D GPU + 4× Cortex-A76 · map &copy; OpenStreetMap contributors, &copy; Protomaps · MIT</p>
+</footer>
+
+<script src="/ui/app.js"></script>
+</body>
+</html>
