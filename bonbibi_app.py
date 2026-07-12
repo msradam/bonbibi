@@ -6,12 +6,20 @@ Runs ON the Pi:
 
     /root/demo-venv/bin/uvicorn bonbibi_app:app --host 0.0.0.0 --port 8500
 
+Narration needs a resident llama-server (model loads once, guidance
+streams immediately; --jinja enables Granite's chat template so route
+facts pass as grounded documents via chat_template_kwargs):
+
+    GGML_VK_VISIBLE_DEVICES=99 llama-server -m granite-4.0-1b-Q4_0.gguf \
+        -ngl 0 -t 4 -c 4096 --jinja --host 127.0.0.1 --port 8081
+
 The UI polls GET /api/state; the map (static/map.html) polls
 static/live/state.json exactly as before. One run at a time.
 """
 
 import glob
 import json
+import urllib.request
 import os
 import re
 import subprocess
@@ -182,48 +190,94 @@ def do_run(p: RunParams):
                 "vehicle": {"summary": car_txt, "possible": bool(car_path)},
             }
 
-        prompt = (
-            f"You are an emergency guidance assistant in a {area} flood. "
-            f"A routing engine computed:\n"
-            f"- Wheelchair user (can only cross water up to 0.5 m deep): {wheel_txt}\n"
-            f"- Car (can cross water up to 2.0 m deep): {car_txt}\n"
-            f"In 3 short sentences, tell the wheelchair user and the driver "
-            f"what each should do right now."
-        )
-        model = glob.glob(f"{RES}/models/**/*ranite*4*.gguf", recursive=True)[0]
         with _lock:
+            cov = RUN.get("coverage") or {}
             RUN["phase"] = "narrating"
+        docs = [
+            {
+                "doc_id": 1,
+                "title": f"Flood assessment for {area}",
+                "text": (
+                    f"Simulated storm over {area}: rain {p.rain} m per cell per "
+                    f"step for {p.steps} steps. Deepest water {cov.get('max_depth_m', '?')} m. "
+                    f"Coverage: {cov.get('shallow_pct', '?')}% of the area under shallow "
+                    f"water below 0.5 m (passable for everyone), "
+                    f"{cov.get('vehicle_pct', '?')}% between 0.5 and 2 m (vehicles only), "
+                    f"{cov.get('deep_pct', '?')}% deeper than 2 m (impassable)."
+                ),
+            },
+            {
+                "doc_id": 2,
+                "title": "Route result: wheelchair user (limit 0.5 m)",
+                "text": f"The routing engine computed: {wheel_txt}. "
+                + (
+                    "Recommended action: a safe crossing exists, so leave now "
+                    "while the route is open; conditions can worsen quickly."
+                    if wheel_path
+                    else "Recommended action: there is no safe route, so stay "
+                    "where you are, move to the highest point nearby, signal "
+                    "for help, and do not enter the water."
+                ),
+            },
+            {
+                "doc_id": 3,
+                "title": "Route result: vehicle (limit 2.0 m)",
+                "text": f"The routing engine computed: {car_txt}. "
+                + (
+                    "Recommended action: a safe crossing exists, so drive it "
+                    "now while the route is open; never drive into water of "
+                    "unknown depth."
+                    if car_path
+                    else "Recommended action: there is no safe route, so do "
+                    "not drive; stay where you are and signal for help."
+                ),
+            },
+        ]
+        payload = {
+            "stream": True,
+            "temperature": 0,
+            "max_tokens": 180,
+            "chat_template_kwargs": {"documents": docs},
+            "messages": [
+                {
+                    "role": "system",
+                    "content": (
+                        "You are Bonbibi, an emergency flood-guidance assistant. "
+                        "Use plain, calm language a person in an emergency can "
+                        "follow. Never invent street names, places, or facts."
+                    ),
+                },
+                {
+                    "role": "user",
+                    "content": (
+                        "Based only on the documents, write three short "
+                        "sentences: first, what the wheelchair user should do "
+                        "right now given their route result; second, what the "
+                        "driver should do right now given their route result; "
+                        "third, one safety note from the flood assessment."
+                    ),
+                },
+            ],
+        }
         stop = threading.Event()
         threading.Thread(
             target=gpu_loop, args=(stop, p.rain, p.dem), daemon=True
         ).start()
-        proc = subprocess.Popen(
-            [
-                LLAMA_BIN,
-                "-m",
-                model,
-                "-ngl",
-                "0",
-                "-t",
-                "4",
-                "-n",
-                "150",
-                "--temp",
-                "0",
-                "-p",
-                prompt,
-            ],
-            cwd=RES,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.DEVNULL,
-            env={**os.environ, "GGML_VK_VISIBLE_DEVICES": "99"},
+        req = urllib.request.Request(
+            "http://127.0.0.1:8081/v1/chat/completions",
+            data=json.dumps(payload).encode(),
+            headers={"Content-Type": "application/json"},
         )
-        buf = b""
-        for chunk in iter(lambda: proc.stdout.read(64), b""):
-            buf += chunk
-            with _lock:
-                RUN["guidance"] = guidance_text(buf.decode(errors="replace"))
-        proc.wait()
+        with urllib.request.urlopen(req, timeout=300) as r:
+            for raw in r:
+                line = raw.decode(errors="replace").strip()
+                if not line.startswith("data: ") or line == "data: [DONE]":
+                    continue
+                delta = json.loads(line[6:])["choices"][0].get("delta", {})
+                piece = delta.get("content") or ""
+                if piece:
+                    with _lock:
+                        RUN["guidance"] = (RUN.get("guidance") or "") + piece
         stop.set()
         with _lock:
             RUN.update(phase="done", done=True)

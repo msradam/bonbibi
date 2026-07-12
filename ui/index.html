@@ -20,6 +20,12 @@
     <h2 id="map-h" class="visually-hidden">Flood map</h2>
     <iframe id="map" title="Map of the selected area showing simulated flood depth and evacuation routes" src="about:blank"></iframe>
     <p id="map-alt" class="map-alt">No storm has been run yet. The map shows the selected area with no flooding.</p>
+
+    <section class="guidance" aria-labelledby="guide-h">
+      <h2 id="guide-h">Guidance <span class="unit">(Granite 4.0 1B, grounded in the computed routes)</span></h2>
+      <p id="guidance" aria-live="polite">Once routes are computed, plain-language guidance is narrated here — while the GPU keeps simulating.</p>
+      <button id="speak" type="button" aria-pressed="false" hidden>Speak guidance</button>
+    </section>
   </section>
 
   <aside class="rail" aria-label="Storm controls and results">
@@ -87,11 +93,6 @@
       </div>
     </section>
 
-    <section class="guidance" aria-labelledby="guide-h">
-      <h2 id="guide-h">Guidance <span class="unit">(Granite 4.0 1B, on the CPU)</span></h2>
-      <p id="guidance" aria-live="polite">Once routes are computed, plain-language guidance is narrated here — while the GPU keeps simulating.</p>
-      <button id="speak" type="button" aria-pressed="false" hidden>Speak guidance</button>
-    </section>
   </aside>
 </main>
 

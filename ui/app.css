@@ -184,9 +184,15 @@ button[disabled] { background: var(--ink-soft); cursor: default; }
 .chip-stranded { background: var(--stranded); }
 .chip-stranded::before { content: "✕ "; }
 
-/* guidance */
+/* guidance: the console's answer, promoted under the map */
+.guidance {
+  margin-top: var(--s4);
+  background: var(--panel); border: 1px solid var(--line);
+  border-left: 6px solid var(--river);
+  border-radius: var(--radius); padding: var(--s4) var(--s5);
+}
 .guidance p { margin: 0; }
-#guidance { font-size: 15px; }
+#guidance { font-size: 19px; line-height: 1.55; max-width: 70ch; }
 #guidance.streaming::after { content: "▍"; animation: caret 1s steps(1) infinite; color: var(--river); }
 @keyframes caret { 50% { opacity: 0; } }
 
