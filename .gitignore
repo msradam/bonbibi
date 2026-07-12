@@ -2,4 +2,8 @@ __pycache__/
 *.pyc
 *.spv
 vkflood
+router_streets
+*.osm.pbf
+deps/routingkit/
 .DS_Store
+FABLE_HANDOFF.md
