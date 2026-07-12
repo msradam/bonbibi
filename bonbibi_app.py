@@ -10,7 +10,7 @@ Narration needs a resident llama-server (model loads once, guidance
 streams immediately; --jinja enables Granite's chat template so route
 facts pass as grounded documents via chat_template_kwargs):
 
-    GGML_VK_VISIBLE_DEVICES=99 llama-server -m granite-4.0-1b-Q4_0.gguf \
+    GGML_VK_VISIBLE_DEVICES=99 llama-server -m granite-4.1-3b-Q4_0.gguf \
         -ngl 0 -t 4 -c 4096 --jinja --host 127.0.0.1 --port 8081
 
 The UI polls GET /api/state; the map (static/map.html) polls
@@ -231,6 +231,7 @@ def narrate(docs: list, instruction: str):
                 "role": "system",
                 "content": (
                     "You are Bonbibi, an emergency flood-guidance assistant. "
+                    "Write plain sentences without markdown, bold, or headings. "
                     "Use plain, calm language a person in an emergency can "
                     "follow. Never invent street names, places, or facts."
                 ),
