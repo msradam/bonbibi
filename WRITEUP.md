@@ -18,9 +18,9 @@ My previous ARM challenge entry, DreamMeridian, answered spatial questions offli
 
 UNDRR's 2023 global survey (6,342 respondents, 132 countries) quantifies it: only 26% of persons with disabilities could evacuate immediately without difficulty, and 10% could not evacuate at all — but given sufficient early warning those numbers move to 39% and 6%. Meanwhile only 8% said their local disaster plans address their needs. Transportation is a leading barrier: 41% of older adults who stayed behind in Hurricane Katrina cited lack of transportation, and in Vietnamese floods interviewees with mobility disabilities simply sheltered in place — "Without a boat or basket, we couldn't really go outside."
 
-Warning works. Routing is the missing half. And in the places that flood worst — river deltas, informal settlements — connectivity is exactly what fails first.
+Warning works. Routing is the missing half. And in the places that flood worst — river deltas, informal settlements — connectivity is exactly what fails first. The scale is documented: 1.81 billion people, 23% of humanity, face significant 1-in-100-year flood exposure, 89% of them in low- and middle-income countries (World Bank / Nature Communications, 2022). The UN's Early Warnings for All initiative aims to cover everyone on Earth by end-2027 with a $3.1B plan, yet 48% of least developed countries still lack adequate multi-hazard early warning — and the funded mechanism for acting ahead of a forecast, anticipatory action, was activated 146 times in 54 countries in 2025, reaching 9.6 million people. A $120 guidance station is the kind of pre-positioned activity that machinery exists to pay for. Full positioning research with citations: `docs/POSITIONING.md`.
 
-The Sundarbans, where Bonbibi guards the forest, floods every monsoon. The offline data bundle for a Sundarbans village in this project is 823 KB.
+The Sundarbans, where Bonbibi guards the forest, floods every monsoon. The offline data bundle for a Sundarbans village in this project is 823 KB. Bangladesh itself is the proof the theory works: warning plus shelters plus 76,020 trained volunteers took cyclone mortality from ~300,000 (1970) to about seventeen (2019).
 
 ---
 
