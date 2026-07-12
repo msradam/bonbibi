@@ -1,4 +1,4 @@
-/* bonbibi console: load areas, run storms, poll state, keep every result
+/* Bonbibi console: load areas, run storms, poll state, keep every result
    readable by screen readers (status line, live guidance, labelled gauge). */
 
 const $ = (id) => document.getElementById(id);

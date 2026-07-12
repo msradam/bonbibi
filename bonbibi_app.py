@@ -1,4 +1,4 @@
-"""bonbibi's UI backend: a small FastAPI app that owns the run pipeline
+"""Bonbibi's UI backend: a small FastAPI app that owns the run pipeline
 (GPU flood frames -> routes -> Granite narration with the GPU looping)
 and serves the accessible console UI plus the offline map assets.
 
@@ -35,7 +35,7 @@ LLAMA_BIN = f"{RES}/llama.cpp/build-vulkan/bin/llama-completion"
 TIME_RE = re.compile(r"time=([0-9.]+)s")
 CELL_RE = re.compile(r"\(r(\d+),c(\d+)\)")
 
-app = FastAPI(title="bonbibi")
+app = FastAPI(title="Bonbibi")
 os.makedirs(LIVE, exist_ok=True)
 
 RUN: dict = {"running": False, "phase": "idle", "done": False}
