@@ -219,8 +219,8 @@ def flood_doc(area, rain, steps, cov) -> dict:
     }
 
 
-def narrate(docs: list, instruction: str):
-    """Stream Granite's grounded composition into RUN['guidance']."""
+def narrate(docs: list, instruction: str, sink=None):
+    """Stream Granite's grounded composition into RUN['guidance'] (and sink)."""
     payload = {
         "stream": True,
         "temperature": 0,
@@ -231,7 +231,6 @@ def narrate(docs: list, instruction: str):
                 "role": "system",
                 "content": (
                     "You are Bonbibi, an emergency flood-guidance assistant. "
-                    "Write plain sentences without markdown, bold, or headings. "
                     "Use plain, calm language a person in an emergency can "
                     "follow. Never invent street names, places, or facts."
                 ),
@@ -252,6 +251,8 @@ def narrate(docs: list, instruction: str):
             delta = json.loads(line[6:])["choices"][0].get("delta", {})
             piece = delta.get("content") or ""
             if piece:
+                if sink:
+                    sink(piece)
                 with _lock:
                     RUN["guidance"] = (RUN.get("guidance") or "") + piece
 

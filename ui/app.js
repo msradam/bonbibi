@@ -1,6 +1,22 @@
 /* Bonbibi console: load areas, run storms, poll state, keep every result
    readable by screen readers (status line, live guidance, labelled gauge). */
 
+function md(text) {
+  const esc = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return esc
+    .split(/\n{2,}/)
+    .map((block) => {
+      let b = block
+        .replace(/^#{1,4}\s+(.+)$/gm, "<strong>$1</strong>")
+        .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+        .replace(/\*([^*\n]+)\*/g, "<em>$1</em>")
+        .replace(/^[-*]\s+/gm, "&bull; ")
+        .replace(/\n/g, "<br>");
+      return `<p>${b}</p>`;
+    })
+    .join("");
+}
+
 const $ = (id) => document.getElementById(id);
 let areas = [];
 let polling = null;
@@ -118,7 +134,7 @@ async function poll() {
   }
   if (s.cap) $("cap-json").textContent = JSON.stringify(s.cap, null, 1);
 
-  if (s.guidance) $("guidance").textContent = s.guidance;
+  if (s.guidance) $("guidance").innerHTML = md(s.guidance);
 
   $("m-sps").textContent = s.gpu_sps ? s.gpu_sps.toLocaleString() : "—";
   $("m-steps").textContent = s.gpu_steps ? s.gpu_steps.toLocaleString() : "—";
