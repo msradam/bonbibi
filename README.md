@@ -10,6 +10,7 @@ the guardian of the Sundarbans.
 
 Submission writeup for the Arm AI Optimization Challenge: `WRITEUP.md`.
 Measured optimization ledger and literature citations: `HACKATHON.md`.
+Hardware kit (two orderable build variants): `docs/KIT.md`.
 
 ## Idea
 
