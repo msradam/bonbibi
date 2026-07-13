@@ -94,9 +94,16 @@ CPU, on the most widely owned computer of its class on Earth.
    rollouts): the $550M dissemination + $1B preparedness budgets are the
    named funding lines for last-mile warning capability.
 3. **Community EWS operators**: Bangladesh CPP (76,020 volunteers, 5,000+
-   shelters), community-based flood EWS programmes in the Hindu Kush
-   Himalaya region — organizations that already train volunteers to
-   operate warning equipment.
+   shelters); ICIMOD's CBFEWS across four Hindu Kush Himalaya countries
+   (caretaker model, ~USD 1,000 hardware + ~USD 10,000 per site, UNFCCC
+   award — and, per its own manual, no modeling, no routing, and a
+   mobile-signal requirement at the caretaker's house); Practical
+   Action's Nepal systems (eight basins, 2-3 hour lead times that their
+   own evaluation calls inadequate for disabled evacuees). WFP's
+   anticipatory action alone covered 6.2M people in 44 countries with a
+   US$100M portfolio in 2024. These programmes already train volunteers
+   to operate warning equipment; Bonbibi is the computation layer their
+   own documentation says is missing.
 4. **Municipal/neighborhood resilience organizations** in high-income
    flood zones (the Red Hook Initiative type): smaller scale, reachable
    directly, fast to pilot, with a documented history of running their
