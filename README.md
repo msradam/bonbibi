@@ -130,6 +130,15 @@ region (rural Sundarbans returns none — deployments need local review);
 the street-graph router is demonstrated on one region and not yet wired
 into the console UI; guidance is simulation-based and says so on screen.
 
+## Pinned versions
+
+llama.cpp at commit `bb28c1f` plus the four patches in the seppa repo's
+`pi/` directory; Mesa v3dv 25.0.7 (Raspberry Pi OS packaging); model
+`granite-4.1-3b-Q4_0.gguf` from ibm-granite/granite-4.1-3b-GGUF;
+Raspberry Pi 5 16 GB (BCM2712, VideoCore VII V3D 7.1.10.2). Expected
+results and tolerances for each measured claim are stated where the
+claim is made (README, HACKATHON.md, and the seppa paper).
+
 ## License
 
 MIT. See `LICENSE`.

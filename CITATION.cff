@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Bonbibi: offline flood simulation, mobility-aware shelter routing, and grounded guidance on a Raspberry Pi 5"
+authors:
+  - family-names: Rahman
+    given-names: Adam Munawar
+version: "1.0"
+date-released: "2026-08-01"
+url: "https://github.com/msradam/bonbibi"
+license: MIT
