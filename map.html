@@ -54,6 +54,16 @@ let originMarker = null;
 map.on("click", (e) => {
   parent.postMessage({ type: "bonbibi:tap", lon: e.lngLat.lng, lat: e.lngLat.lat }, "*");
 });
+// Discrete pan/zoom control, for callers that need a non-gesture control
+// surface (WCAG 2.5.7 / the panel's "no gesture-only interaction" rule).
+// Native drag/pinch stays available too -- this is additive, not a lockout.
+window.addEventListener("message", (e) => {
+  if (!e.data || e.data.type !== "bonbibi:map-control") return;
+  const { action, dx, dy } = e.data;
+  if (action === "zoom-in") map.zoomIn();
+  else if (action === "zoom-out") map.zoomOut();
+  else if (action === "pan") map.panBy([dx || 0, dy || 0]);
+});
 map.on("load", () => {
   map.addSource("shelters", { type: "geojson",
     data: { type: "FeatureCollection", features: [] } });

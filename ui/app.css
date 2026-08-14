@@ -2,8 +2,12 @@
    Tokens first; every color/type decision derives from them. */
 
 @font-face {
-  font-family: "Public Sans";
-  src: url("/app/static/fonts-ui/PublicSans.woff2") format("woff2");
+  /* Noto Sans, not Public Sans: the panel design doc explicitly bans Public
+     Sans (README §2, "visually annexes Bonbibi to the US federal
+     government"); Noto Sans is what the panel UI uses, so this also keeps
+     the console and the panel typographically consistent. */
+  font-family: "Noto Sans";
+  src: url("/ui/fonts/NotoSans.woff2") format("woff2");
   font-weight: 100 900;
   font-display: swap;
 }
@@ -36,8 +40,9 @@
   --stranded: #b3261e;
   --wheel: #2e7d32;       /* route line colors, match the map */
   --vehicle: #b54708;
+  --brand: #123524;       /* Phthalo Green — wordmark/brand only, never a status color */
   /* type */
-  --sans: "Public Sans", system-ui, sans-serif;
+  --sans: "Noto Sans", system-ui, sans-serif;
   --mono: "Plex Mono", ui-monospace, "SF Mono", monospace;
   /* rhythm */
   --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px;
@@ -77,8 +82,8 @@ h2 { font: 600 13px/1.2 var(--mono); letter-spacing: 0.08em; text-transform: upp
   border-bottom: 2px solid var(--ink);
   background: var(--panel);
 }
-.wordmark { margin: 0; font: 600 22px var(--mono); }
-.wordmark span { color: var(--river); }
+.wordmark { margin: 0; font: 600 22px var(--mono); display: flex; align-items: center; gap: var(--s2); }
+.wordmark-mark { color: var(--brand); flex: none; }
 .tagline { margin: 0; color: var(--ink-soft); flex: 1; min-width: 240px; }
 .badge {
   margin: 0; font: 600 11px var(--mono); letter-spacing: 0.1em;

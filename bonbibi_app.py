@@ -39,6 +39,7 @@ SZ = 256
 GRID = 16
 LIVE = f"{RES}/static/live"
 UI = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ui")
+PANEL = os.path.join(os.path.dirname(os.path.abspath(__file__)), "panel")
 VKFLOOD_ENV = {"STRIP": "2", "FUSED": "1", "FLUX_SPV": "fused2s.spv"}
 LLAMA_BIN = f"{RES}/llama.cpp/build-vulkan/bin/llama-completion"
 # Mobility thresholds: limiting STILL-WATER depths from ARR Project 10 and
@@ -339,6 +340,46 @@ def index():
     return FileResponse(os.path.join(UI, "index.html"))
 
 
+@app.get("/api/thresholds")
+def thresholds():
+    return THRESHOLDS
+
+
+def check_narrate() -> bool:
+    try:
+        urllib.request.urlopen("http://127.0.0.1:8081/health", timeout=2)
+        return True
+    except Exception:
+        return False
+
+
+@app.get("/api/selftest")
+def selftest():
+    """Real, checked stage results -- never a fabricated PASS.
+
+    AUDIO has no on-device TTS yet (Piper is a tracked work item, see
+    docs/KIT.md); narration only speaks through a browser's Web Speech
+    API today, which this endpoint -- running on the Pi, not in a
+    browser -- cannot verify. Report it honestly as not_built rather
+    than guessing pass or fail.
+    """
+    sim_ok = os.path.exists(f"{RES}/vkflood2") and os.access(f"{RES}/vkflood2", os.X_OK)
+    route_ok = len(glob.glob(f"{RES}/dem_*.txt")) > 0
+    stages = {
+        "sim": "pass" if sim_ok else "fail",
+        "route": "pass" if route_ok else "fail",
+        "narrate": "pass" if check_narrate() else "fail",
+        "audio": "not_built",
+    }
+    return {
+        "stages": stages,
+        "overall": "pass"
+        if all(v == "pass" for k, v in stages.items() if k != "audio")
+        else "fail",
+        "checked_at": time.strftime("%Y-%m-%d %H:%M %Z"),
+    }
+
+
 @app.get("/api/areas")
 def areas():
     out = []
@@ -534,3 +575,4 @@ def state():
 
 app.mount("/app/static", StaticFiles(directory=f"{RES}/static"), name="static")
 app.mount("/ui", StaticFiles(directory=UI), name="ui")
+app.mount("/panel", StaticFiles(directory=PANEL, html=True), name="panel")

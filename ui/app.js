@@ -19,7 +19,12 @@ function md(text) {
 
 const $ = (id) => document.getElementById(id);
 let areas = [];
+let thresholds = null;
 let polling = null;
+
+async function loadThresholds() {
+  thresholds = await (await fetch("/api/thresholds")).json();
+}
 
 const PHASES = {
   starting: "Starting the storm...",
@@ -110,7 +115,11 @@ async function poll() {
     $("gauge").setAttribute(
       "aria-label",
       `Depth gauge. Deepest simulated water ${c.max_depth_m} metres. ` +
-        `Wheelchair limit 0.5 metres, vehicle limit 2.0 metres.`
+        (thresholds
+          ? `Wheelchair limit ${thresholds.wheelchair} metres, ` +
+            `on-foot limit ${thresholds.foot} metres, ` +
+            `vehicle limit ${thresholds.vehicle} metres.`
+          : "")
     );
     $("cov-h1").textContent = `${c.h1_pct}%`;
     $("cov-h2").textContent = `${c.h2_pct}%`;
@@ -193,5 +202,6 @@ window.addEventListener("message", async (e) => {
   }
 });
 
+loadThresholds();
 loadAreas();
 poll();
