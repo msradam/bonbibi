@@ -1,5 +1,6 @@
 __pycache__/
 *.pyc
+.ruff_cache/
 *.spv
 vkflood
 router_streets
@@ -7,3 +8,12 @@ router_streets
 deps/routingkit/
 .DS_Store
 FABLE_HANDOFF.md
+DEVPOST_ANSWERS.md
+deck/deck.md
+deck/*.b64
+deck/slides/
+deck/segs/
+deck/concat_video.mp4
+devpost/gallery/graphics.md
+devpost/thumbnail.md
+Bonbibi Design System.zip

@@ -1,3 +1,5 @@
+![Bonbibi](brand/banner.png)
+
 # Bonbibi
 
 Offline flood simulation, mobility-aware shelter routing, and grounded
@@ -10,6 +12,7 @@ the guardian of the Sundarbans.
 
 Submission writeup for the Arm AI Optimization Challenge: `WRITEUP.md`.
 Measured optimization ledger and literature citations: `HACKATHON.md`.
+Full benchmark ledger with raw commands: `BENCHMARK_RESULTS.md`.
 Hardware kit (two orderable build variants): `docs/KIT.md`.
 
 ## Idea
@@ -36,7 +39,7 @@ with the speedup growing to 2.09x under concurrent CPU load.
 ## Mobility profiles
 
 Thresholds are limiting still-water depths from the flood-safety
-literature (ARR Project 10; AIDR Guideline 7-3 — quotes and citations in
+literature (ARR Project 10; AIDR Guideline 7-3; quotes and citations in
 `HACKATHON.md`):
 
 | Profile | Limit | Basis |
@@ -59,16 +62,23 @@ the AIDR hazard classes (H1 <0.3 m, H2 <0.5 m, H3 <1.2 m, H4+ above).
   with Granite narrating from grounded documents. Every completed run
   also emits a CAP 1.2-shaped structured alert (`status: Exercise`).
 - **Terminal CLI** (`bonbibi_cli.py`): the same pipeline headless, with
-  the flood raster rendered as ANSI half-blocks over SSH — shelters,
+  the flood raster rendered as ANSI half-blocks over SSH: shelters,
   person marker, per-profile routes, streaming guidance.
 - **Street-graph router** (`router_streets.cpp`): RoutingKit CCH over a
   real OSM extract; each flood update re-customizes in ~14 ms on the Pi.
 - **Live data** (`fetch_live.py`): USGS gage + Open-Meteo rainfall
   driving the simulation from real conditions.
+- **Panel** (`panel/`): a second, purpose-built interface for an 800x480
+  DSI touchscreen kiosk (IDLE, RUNNING, RESULT, and MAP screens), the
+  same backend and physics, tuned for a small always-on physical device
+  rather than a desktop browser. Bring-up notes: `panel/` and
+  `docs/KIT.md`.
+
+![Bonbibi panel: the 800x480 kiosk on boot, self-test passing](docs/img/panel_idle.png)
 
 ## Quick start (on the Pi)
 
-One-time, online — fetch an area (elevation, basemap, shelters):
+One-time, online: fetch an area (elevation, basemap, shelters).
 
 ```
 python3 fetch_dem.py redhook 40.667 40.685 -74.02 -73.998
@@ -104,8 +114,10 @@ python3 bonbibi_cli.py --lat 40.681 --lon -74.01
 
 llama.cpp is built CPU-only-by-design for inference (the GPU is busy with
 physics); `GGML_VK_VISIBLE_DEVICES=99` hides the GPU from the inference
-process, which alone is worth +22% decode on this board (measured; see
-`HACKATHON.md`).
+process. With any Vulkan device visible, llama.cpp otherwise places CPU
+weights in GPU host-pinned memory even at `-ngl 0`, worth **10.6x on
+prompt processing and +13.7% on decode** on the production model
+(measured on the board; see `BENCHMARK_RESULTS.md` and `HACKATHON.md`).
 
 ## Sample areas
 
@@ -126,9 +138,27 @@ envelope, offline cartography, WCAG 2.2 AA console, headless CLI.
 Not yet production: the flood model has no drainage or infiltration, so
 absolute depths are inflated and the spatial pattern is the meaningful
 output; shelter candidates come from OSM, whose completeness varies by
-region (rural Sundarbans returns none — deployments need local review);
+region (rural Sundarbans returns none; deployments need local review);
 the street-graph router is demonstrated on one region and not yet wired
 into the console UI; guidance is simulation-based and says so on screen.
+
+## Evidence
+
+Everything measured in this repo is reproducible from what's checked in,
+not from a live device, since a physical kit can always be unreachable
+when someone reads this:
+
+- **Raw benchmark output**: `bench_llm_cpu.log`, `spec_decode.log`
+  (actual `llama-bench`/`llama-server` stdout, not transcribed numbers).
+- **Reproduction script**: `bench_llm_cpu.sh`, runnable on any Pi 5 with
+  the pinned llama.cpp build.
+- **Full ledger**: `BENCHMARK_RESULTS.md`, every number with its
+  reproduction command next to it.
+- **Screenshots**: `docs/img/`, `devpost/gallery/`, real captures of
+  the console and panel, not mockups.
+- **Demo video**: `video/out/` for the render, `video/SPEAKER_NOTES.md`
+  for narration, `deck/` for the source slide deck (Marp) spliced with
+  real screen capture.
 
 ## Pinned versions
 

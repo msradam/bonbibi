@@ -1,0 +1,7 @@
+
+(cog:4828): Cog-DRM-WARNING **: 13:57:25.733: Renderer 'modeset' does not support rotation 0 (0 degrees).
+
+** (WPEWebProcess:2): WARNING **: 13:57:25.978: Can't connect to a11y bus: Could not connect: No such file or directory
+Cog-Core-Message: 13:57:25.983: <http://localhost:8500/panel/> Load started.
+Cog-Core-Message: 13:57:25.987: <http://localhost:8500/panel/> Loading...
+Cog-Core-Message: 13:57:26.071: <http://localhost:8500/panel/> Loaded successfully.
