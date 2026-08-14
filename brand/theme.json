@@ -1,0 +1,29 @@
+{
+  "$description": "Bonbibi brand/presentation palette — wordmark, video, submission materials, marketing. NEVER used for in-panel safety-critical status/depth colors (see design_handoff_bonbibi_panel/README.md and panel/tokens.json for those; ISO 3864-1 mandates those, they are not a branding choice). Sources: color-hex.com/color/123524, colors.muz.li/color/phthalo-green, icolorpalette.com/color/phthalo-green.",
+  "phthaloGreen": {
+    "base": "#123524",
+    "ramp": ["#123524", "#1f5b3e", "#2c8158", "#39a772", "#50c38b"],
+    "complementary": "#351222",
+    "analogous": ["#123513", "#123524", "#123535", "#122335"]
+  },
+  "neutral": {
+    "paper": "#F5F5F1",
+    "ink": "#0B1A24",
+    "inkSecondary": "#4A5760",
+    "rule": "#B7BBB2"
+  },
+  "type": {
+    "chrome": "Jersey 20",
+    "computed": "Jersey 25",
+    "prose": "Noto Sans"
+  },
+  "mark": {
+    "source": "leaf.svg (repo root, brand/leaf.svg canonical copy)",
+    "attribution": "Pixelarticons by Gerrit Halfmann (github.com/halfmage/pixelarticons), MIT License",
+    "variants": {
+      "currentColor": "leaf.svg",
+      "phthalo": "leaf-phthalo.svg",
+      "white": "leaf-white.svg"
+    }
+  }
+}
