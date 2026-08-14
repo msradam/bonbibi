@@ -1,0 +1,65 @@
+ggml_vulkan: Invalid device index 99 in GGML_VK_VISIBLE_DEVICES.
+warning: no usable GPU found, --gpu-layers option will be ignored
+warning: one possible reason is that llama.cpp was compiled without GPU support
+warning: consult docs/build.md for compilation instructions
+warning: no usable GPU found, --gpu-layers-draft option will be ignored
+warning: one possible reason is that llama.cpp was compiled without GPU support
+warning: consult docs/build.md for compilation instructions
+0.00.047.547 I log_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.047.552 I device_info:
+0.00.047.559 I   - CPU     : CPU (16218 MiB, 16218 MiB free)
+0.00.047.590 I system_info: n_threads = 3 (n_threads_batch = 3) / 4 | CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | 
+0.00.047.592 I srv  llama_server: n_parallel is set to auto, using n_parallel = 4 and kv_unified = true
+0.00.047.628 I srv          init: running without SSL
+0.00.047.646 I srv          init: using 8 threads for HTTP server
+0.00.047.743 I srv         start: binding port with default address family
+0.00.048.908 I srv  llama_server: loading model
+0.00.048.911 I srv    load_model: loading model 'models/granite-4.1-3b-Q4_0.gguf'
+0.00.048.944 I common_init_result: fitting params to device memory ...
+0.00.048.945 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on)
+0.00.362.221 I common_params_fit_impl: projected to use 727 MiB of host memory vs. 16218 MiB of total host memory
+0.15.614.622 W llama_context: n_ctx_seq (4096) < n_ctx_train (131072) -- the full capacity of the model will not be utilized
+0.15.730.116 I common_init_from_params: warming up the model with an empty run - please wait ... (--no-warmup to disable)
+0.15.990.129 I srv    load_model: loading draft model 'models/granite-4.0-1b-dense/granite-4.0-1b-Q4_0.gguf'
+0.27.672.971 W llama_context: n_ctx_seq (4096) < n_ctx_train (131072) -- the full capacity of the model will not be utilized
+0.27.945.723 I srv    load_model: initializing slots, n_slots = 4
+0.28.222.604 W common_speculative_init: draft model is specified but 'draft' speculative type is not explicitly enabled - enabling it
+0.28.222.611 I common_speculative_impl_draft_simple: adding speculative implementation 'draft-simple'
+0.28.222.615 I common_speculative_impl_draft_simple: - n_max=3, n_min=0, p_min=0.000000
+0.28.222.618 I common_speculative_impl_draft_simple: - gpu_layers=0, cache_k=f16, cache_v=f16, ctx_tgt=yes, ctx_dft=yes, devices=[default]
+0.28.224.584 I srv    load_model: speculative decoding context initialized
+0.28.224.589 I slot   load_model: id  0 | task -1 | new slot, n_ctx = 4096
+0.28.224.591 I slot   load_model: id  1 | task -1 | new slot, n_ctx = 4096
+0.28.224.592 I slot   load_model: id  2 | task -1 | new slot, n_ctx = 4096
+0.28.224.593 I slot   load_model: id  3 | task -1 | new slot, n_ctx = 4096
+0.28.224.659 I srv    load_model: prompt cache is enabled, size limit: 8192 MiB
+0.28.224.660 I srv    load_model: use `--cache-ram 0` to disable the prompt cache
+0.28.224.661 I srv    load_model: for more info see https://github.com/ggml-org/llama.cpp/pull/16391
+0.28.226.398 I srv          init: idle slots will be saved to prompt cache and cleared upon starting a new task
+0.28.239.722 I init: chat template, example_format: '<|start_of_role|>system<|end_of_role|>You are a helpful assistant<|end_of_text|>
+<|start_of_role|>user<|end_of_role|>Hello<|end_of_text|>
+<|start_of_role|>assistant<|end_of_role|>Hi there<|end_of_text|>
+<|start_of_role|>user<|end_of_role|>How are you?<|end_of_text|>
+<|start_of_role|>assistant<|end_of_role|>'
+0.28.246.000 I srv          init: init: chat template, thinking = 0
+0.28.246.011 I srv  llama_server: model loaded
+0.28.246.015 I srv  llama_server: server is listening on http://127.0.0.1:8082
+0.28.246.018 I srv  update_slots: all slots are idle
+0.38.158.638 I srv  params_from_: Chat format: peg-native
+0.38.158.728 I slot get_availabl: id  3 | task -1 | selected slot by LRU, t_last = -1
+0.38.158.730 I srv  get_availabl: updating prompt cache
+0.38.158.734 I srv          load:  - looking for better prompt, base f_keep = -1.000, sim = 0.000
+0.38.158.739 I srv        update:  - cache state: 0 prompts, 0.000 MiB (limits: 8192.000 MiB, 4096 tokens, 8589934592 est)
+0.38.158.741 I srv  get_availabl: prompt cache update took 0.01 ms
+0.38.158.800 I slot launch_slot_: id  3 | task 0 | processing task, is_child = 0
+1.06.119.342 I slot print_timing: id  3 | task 0 | n_decoded =    103, tg =   4.22 t/s
+1.09.301.786 I slot print_timing: id  3 | task 0 | n_decoded =    121, tg =   4.39 t/s
+1.10.726.223 I slot print_timing: id  3 | task 0 | prompt eval time =    3576.85 ms /    83 tokens (   43.09 ms per token,    23.20 tokens per second)
+1.10.726.232 I slot print_timing: id  3 | task 0 |        eval time =   28990.54 ms /   128 tokens (  226.49 ms per token,     4.42 tokens per second)
+1.10.726.233 I slot print_timing: id  3 | task 0 |       total time =   32567.39 ms /   211 tokens
+1.10.726.234 I slot print_timing: id  3 | task 0 |    graphs reused =         49
+1.10.726.235 I slot print_timing: id  3 | task 0 | draft acceptance = 0.51678 (   77 accepted /   149 generated)
+1.10.726.262 I statistics     draft-simple: #calls(b,g,a) =    1     50     50, #gen drafts =     50, #acc drafts =    33, #gen tokens =    149, #acc tokens =    77, dur(b,g,a) = 0.000, 13265.414, 0.022 ms
+1.10.726.298 I slot      release: id  3 | task 0 | stop processing: n_tokens = 210, truncated = 0
+1.10.726.314 I srv  update_slots: all slots are idle
+1.31.648.504 I srv    operator(): operator(): cleaning up before exit...

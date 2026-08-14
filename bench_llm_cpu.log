@@ -1,0 +1,98 @@
+=== 2026-08-14T16:11:51Z — Raspberry Pi 5 Model B Rev 1.1 ===
+
+--- KleidiAI vs native repack (GGML_VK_VISIBLE_DEVICES=99, -ngl 0, -t 3, r=5) ---
+[native]
+ggml_vulkan: Invalid device index 99 in GGML_VK_VISIBLE_DEVICES.
+| model                          |       size |     params | backend    | threads |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | ------: | --------------: | -------------------: |
+| granite 3B Q4_0                |   1.84 GiB |     3.40 B | CPU        |       3 |           pp128 |         31.16 ± 0.44 |
+| granite 3B Q4_0                |   1.84 GiB |     3.40 B | CPU        |       3 |            tg64 |          5.35 ± 0.28 |
+
+build: 57998d5 (39)
+[kleidiai]
+| model                          |       size |     params | backend    | threads |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | ------: | --------------: | -------------------: |
+| granite 3B Q4_0                |   1.84 GiB |     3.40 B | CPU        |       3 |           pp128 |         22.31 ± 0.35 |
+| granite 3B Q4_0                |   1.84 GiB |     3.40 B | CPU        |       3 |            tg64 |          4.68 ± 0.04 |
+
+build: 3f2dcc1 (40)
+
+--- GGML_VK_VISIBLE_DEVICES=99 decode win (native build, -ngl 0 both sides, -t 3, r=5) ---
+[vulkan device visible]
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = V3D 7.1.10.2 (V3DV Mesa) | uma: 1 | fp16: 1 | bf16: 0 | warp size: 16 | shared memory: 32768 | int dot: 1 | matrix cores: none
+| model                          |       size |     params | backend    | ngl | threads |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ------: | --------------: | -------------------: |
+| granite 3B Q4_0                |   1.84 GiB |     3.40 B | Vulkan     |   0 |       3 |           pp128 |          2.12 ± 0.00 |
+| granite 3B Q4_0                |   1.84 GiB |     3.40 B | Vulkan     |   0 |       3 |            tg64 |          4.16 ± 0.51 |
+
+build: 57998d5 (39)
+[vulkan device hidden]
+ggml_vulkan: Invalid device index 99 in GGML_VK_VISIBLE_DEVICES.
+| model                          |       size |     params | backend    | threads |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | ------: | --------------: | -------------------: |
+| granite 3B Q4_0                |   1.84 GiB |     3.40 B | CPU        |       3 |           pp128 |         22.39 ± 0.12 |
+| granite 3B Q4_0                |   1.84 GiB |     3.40 B | CPU        |       3 |            tg64 |          4.73 ± 0.02 |
+
+build: 57998d5 (39)
+
+--- 3 vs 4 threads (native build, GPU hidden, -ngl 0, r=5) ---
+[t=3]
+ggml_vulkan: Invalid device index 99 in GGML_VK_VISIBLE_DEVICES.
+| model                          |       size |     params | backend    | threads |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | ------: | --------------: | -------------------: |
+| granite 3B Q4_0                |   1.84 GiB |     3.40 B | CPU        |       3 |           pp128 |         21.44 ± 0.28 |
+| granite 3B Q4_0                |   1.84 GiB |     3.40 B | CPU        |       3 |            tg64 |          4.70 ± 0.01 |
+
+build: 57998d5 (39)
+[t=4]
+ggml_vulkan: Invalid device index 99 in GGML_VK_VISIBLE_DEVICES.
+| model                          |       size |     params | backend    | threads |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | ------: | --------------: | -------------------: |
+| granite 3B Q4_0                |   1.84 GiB |     3.40 B | CPU        |       4 |           pp128 |         25.24 ± 0.42 |
+| granite 3B Q4_0                |   1.84 GiB |     3.40 B | CPU        |       4 |            tg64 |          4.38 ± 0.01 |
+
+build: 57998d5 (39)
+
+--- Q4_0 vs K-quants (native build, GPU hidden, -ngl 0, -t 3, r=5) ---
+[Q4_0]
+ggml_vulkan: Invalid device index 99 in GGML_VK_VISIBLE_DEVICES.
+| model                          |       size |     params | backend    | threads |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | ------: | --------------: | -------------------: |
+| granite 3B Q4_0                |   1.84 GiB |     3.40 B | CPU        |       3 |           pp128 |         21.22 ± 0.01 |
+| granite 3B Q4_0                |   1.84 GiB |     3.40 B | CPU        |       3 |            tg64 |          4.69 ± 0.00 |
+
+build: 57998d5 (39)
+[Q3_K_M]
+ggml_vulkan: Invalid device index 99 in GGML_VK_VISIBLE_DEVICES.
+| model                          |       size |     params | backend    | threads |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | ------: | --------------: | -------------------: |
+| granite 3B Q3_K - Medium       |   1.60 GiB |     3.40 B | CPU        |       3 |           pp128 |          5.97 ± 0.03 |
+| granite 3B Q3_K - Medium       |   1.60 GiB |     3.40 B | CPU        |       3 |            tg64 |          4.00 ± 0.07 |
+
+build: 57998d5 (39)
+[Q4_K_M]
+ggml_vulkan: Invalid device index 99 in GGML_VK_VISIBLE_DEVICES.
+| model                          |       size |     params | backend    | threads |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | ------: | --------------: | -------------------: |
+| granite 3B Q4_K - Medium       |   1.95 GiB |     3.40 B | CPU        |       3 |           pp128 |         12.20 ± 0.04 |
+| granite 3B Q4_K - Medium       |   1.95 GiB |     3.40 B | CPU        |       3 |            tg64 |          4.35 ± 0.04 |
+
+build: 57998d5 (39)
+
+--- Speculative decoding: 1B drafts for 3B (native build, GPU hidden, -ngl 0, -t 3/-td 3) ---
+[target alone, baseline tg64 from the thread-count section above applies]
+[speculative: target=3B draft=1B]
+ggml_vulkan: Invalid device index 99 in GGML_VK_VISIBLE_DEVICES.
+warning: no usable GPU found, --gpu-layers option will be ignored
+warning: one possible reason is that llama.cpp was compiled without GPU support
+warning: consult docs/build.md for compilation instructions
+warning: no usable GPU found, --gpu-layers-draft option will be ignored
+warning: one possible reason is that llama.cpp was compiled without GPU support
+warning: consult docs/build.md for compilation instructions
+0.00.070.015 I common_init_result: fitting params to device memory ...
+0.00.070.021 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on)
+0.00.537.060 I common_params_fit_impl: projected to use 10850 MiB of host memory vs. 16218 MiB of total host memory
+0.06.647.077 I common_init_from_params: warming up the model with an empty run - please wait ... (--no-warmup to disable)
+
+=== done, raw output in ./bench_llm_cpu.log ===
