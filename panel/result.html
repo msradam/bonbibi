@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=800, initial-scale=1, user-scalable=no">
+<title>Bonbibi — panel</title>
+<link rel="icon" type="image/png" href="/panel/favicon.png">
+<link rel="stylesheet" href="/panel/tokens.css">
+<link rel="stylesheet" href="/panel/app.css">
+</head>
+<body>
+<div class="frame" data-screen="RESULT" data-mode="default">
+
+  <div class="exercise-bar" role="note">
+    <span class="exercise-bar__label">EXERCISE</span>
+    <span aria-hidden="true" class="exercise-bar__sep">|</span>
+    <span class="exercise-bar__text">CAP 1.2 STATUS: EXERCISE &mdash; PARTICIPANTS ONLY</span>
+  </div>
+
+  <div class="source-line">
+    <span class="chrome-label">SOURCE</span>
+    <span dir="auto" id="source-text">Cyclone Preparedness Programme, Bangladesh Red Crescent Society</span>
+  </div>
+
+  <div class="result-body">
+
+    <div class="gauge-col">
+      <div class="chrome-label" style="margin-block-end:26px">DEPTH m</div>
+      <div class="gauge" id="gauge" role="img">
+
+        <div class="gauge__body">
+          <div class="gauge__band" data-hazard-class="D0" id="band-d0" style="inset-block-start:0;block-size:25px">D0</div>
+          <div class="gauge__band" data-hazard-class="D1" id="band-d1" style="inset-block-start:25px;block-size:50px">D1</div>
+          <div class="gauge__band" data-hazard-class="D2" id="band-d2" style="inset-block-start:75px;block-size:50px">D2</div>
+          <div class="gauge__band" data-hazard-class="D3" id="band-d3" style="inset-block-start:125px;block-size:175px;color:var(--depth-on-band-hi)">D3</div>
+          <div class="gauge__casing gauge__casing--low" style="inset-block-start:23px"></div>
+          <div class="gauge__casing gauge__casing--low" style="inset-block-start:73px"></div>
+          <div class="gauge__casing gauge__casing--high" style="inset-block-start:123px"></div>
+        </div>
+
+        <div class="gauge__marker-outer" id="marker-outer" data-water-surface=""></div>
+        <div class="gauge__marker-core" id="marker-core"></div>
+        <div class="gauge__marker-tab" id="marker-tab"></div>
+
+        <div class="gauge__ticks" id="gauge-ticks"></div>
+
+        <div class="gauge__datum"></div>
+        <div class="chrome-label gauge__datum-label">0.00 m DATUM</div>
+
+        <div class="gauge__limit-line" style="inset-block-start:24px"></div>
+        <div class="gauge__lozenge" data-threshold="wheelchair" data-mobility-profile="wheelchair" style="inset-block-start:1px">
+          <div class="gauge__lozenge-value">0.10 m</div>
+          <div class="gauge__lozenge-name">WHEELCHAIR</div>
+        </div>
+
+        <div class="gauge__limit-line" style="inset-block-start:74px"></div>
+        <div class="gauge__lozenge" data-threshold="vehicle" data-mobility-profile="vehicle" style="inset-block-start:51px">
+          <div class="gauge__lozenge-value">0.30 m</div>
+          <div class="gauge__lozenge-name">VEHICLE</div>
+        </div>
+
+        <div class="gauge__limit-line" style="inset-block-start:124px"></div>
+        <div class="gauge__lozenge" data-threshold="foot" data-mobility-profile="foot" style="inset-block-start:101px">
+          <div class="gauge__lozenge-value">0.50 m</div>
+          <div class="gauge__lozenge-name">ON FOOT</div>
+        </div>
+
+        <div class="gauge__break"></div>
+        <div class="gauge__band gauge__band--d4" data-hazard-class="D4" id="band-d4">D4</div>
+        <div class="chrome-label gauge__d4-label">&gt;1.20 m D4</div>
+      </div>
+    </div>
+
+    <div class="fact-col">
+      <div class="status-chip" id="status-chip" data-status-chip="warning">
+        <svg width="20" height="22" viewBox="0 0 10 10" aria-hidden="true" class="status-chip__glyph--warning">
+          <g fill="var(--status-warning)"><rect x="4" y="0" width="2" height="2"/><rect x="3" y="2" width="4" height="2"/><rect x="2" y="4" width="6" height="2"/><rect x="1" y="6" width="8" height="2"/><rect x="0" y="8" width="10" height="2"/></g>
+        </svg>
+        <span id="status-chip-text">APPROACHING LIMIT</span>
+      </div>
+      <div>
+        <div dir="auto" class="readout">
+          <span class="readout__value" id="depth-value">0.42</span><span class="readout__unit">m</span>
+        </div>
+        <div class="hazard-line" id="hazard-line">Still water. Band <strong id="hazard-band">D2</strong>, 0.30 to 0.50 m.</div>
+      </div>
+      <div class="fact-block">
+        <div class="chrome-label">LOCATION</div>
+        <div dir="auto" class="fact-text" id="location-text">At Ghona Bazar junction, 240 m north of Kalibari Primary School.</div>
+      </div>
+      <div class="fact-block">
+        <div class="chrome-label">TIMELINE</div>
+        <div dir="auto" class="fact-text" id="timeline-text">Measured 05:12, Bangladesh Standard Time.</div>
+      </div>
+    </div>
+
+    <div class="verdict-col">
+      <div class="verdict-banner" id="verdict-banner" data-status-chip="safe" role="alert">
+        <span aria-hidden="true" class="verdict-banner__glyph"></span>
+        <span id="verdict-text">PASSABLE ON FOOT</span>
+      </div>
+      <div dir="auto" class="verdict-imperative" id="guidance-imperative">Walk to Kalibari Cyclone Shelter now. Do not drive.</div>
+      <div dir="auto" lang="bn" class="verdict-imperative verdict-imperative--bn" id="guidance-imperative-bn">এখনই কালীবাড়ি শেল্টারে হেঁটে যান।</div>
+
+      <div class="shelter-card">
+        <div class="shelter-card__head">
+          <span class="shelter-card__name" id="shelter-name">Kalibari Shelter</span>
+          <span class="shelter-card__distance" id="shelter-distance">620 m</span>
+        </div>
+        <div class="shelter-card__route">
+          <svg width="96" height="14" viewBox="0 0 96 14" aria-hidden="true">
+            <rect x="2" y="3" width="78" height="8" fill="var(--surface-ink)"/>
+            <rect x="2" y="4" width="78" height="6" fill="var(--surface-paper)"/>
+            <line x1="2" y1="7" x2="80" y2="7" stroke="var(--route-foot)" stroke-width="4" stroke-dasharray="8 4"/>
+            <rect x="82" y="2" width="10" height="10" fill="none" stroke="var(--surface-ink)" stroke-width="2"/>
+          </svg>
+          <span class="chrome-label" id="shelter-profile">ON FOOT</span>
+        </div>
+      </div>
+      <button data-target="true" type="button" class="other-options-btn">OTHER OPTIONS</button>
+    </div>
+
+  </div>
+</div>
+<script src="/panel/result.js"></script>
+</body>
+</html>

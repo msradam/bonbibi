@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=800, initial-scale=1, user-scalable=no">
+<title>Bonbibi — panel</title>
+<link rel="icon" type="image/png" href="/panel/favicon.png">
+<link rel="stylesheet" href="/panel/tokens.css">
+<link rel="stylesheet" href="/panel/app.css">
+</head>
+<body>
+<div class="frame frame--map" data-screen="MAP" data-mode="default">
+
+  <div class="map-head">
+    <button type="button" class="map-back" id="map-back" aria-label="Back to the panel">&larr;</button>
+    <svg class="idle-mark" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M3 22H1v-4h2v4Zm10 0H9v-2h4v2Zm-4-2H5v-2h4v2Zm8 0h-4v-2h4v2ZM5 18H3v-2h2v2Zm14 0h-2v-2h2v2Zm-8-2H5v-2h6v2Zm10 0h-2V4h2v12ZM5 14H3v-4h2v4Zm8 0h-2v-2h2v2Zm-6-4H5V8h2v2Zm6-2H7V6h6v2Zm4-2h-4V4h4v2Zm2-2h-2V2h2v2Z"/></svg>
+    <span class="map-title" id="map-title">MAP &mdash; redhook</span>
+  </div>
+
+  <div class="map-body">
+    <iframe id="map-frame" class="map-frame" title="Flood map with hazard bands and evacuation routes" src="about:blank"></iframe>
+
+    <div class="map-controls" role="group" aria-label="Map pan and zoom">
+      <button type="button" class="map-ctl" id="ctl-up" aria-label="Pan up">&uarr;</button>
+      <button type="button" class="map-ctl" id="ctl-down" aria-label="Pan down">&darr;</button>
+      <button type="button" class="map-ctl" id="ctl-left" aria-label="Pan left">&larr;</button>
+      <button type="button" class="map-ctl" id="ctl-right" aria-label="Pan right">&rarr;</button>
+      <button type="button" class="map-ctl map-ctl--zoom" id="ctl-zoomin" aria-label="Zoom in">+</button>
+      <button type="button" class="map-ctl map-ctl--zoom" id="ctl-zoomout" aria-label="Zoom out">&minus;</button>
+    </div>
+  </div>
+
+  <div class="map-status" id="map-status">Tap the map to route a person to the nearest reachable shelter.</div>
+
+  <div class="map-legend">
+    <span><span class="map-legend__sw" style="background:#DCE9F2"></span>D0</span>
+    <span><span class="map-legend__sw" style="background:#9CC4DE"></span>D1</span>
+    <span><span class="map-legend__sw" style="background:#4A8CBF"></span>D2</span>
+    <span><span class="map-legend__sw" style="background:#1F4E86"></span>D3</span>
+    <span><span class="map-legend__sw" style="background:#4A1E68"></span>D4</span>
+    <span class="map-legend__you"><span aria-hidden="true">&#9679;</span> you are here</span>
+  </div>
+</div>
+<script src="/panel/map.js"></script>
+</body>
+</html>

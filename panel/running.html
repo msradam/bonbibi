@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=800, initial-scale=1, user-scalable=no">
+<title>Bonbibi — panel</title>
+<link rel="icon" type="image/png" href="/panel/favicon.png">
+<link rel="stylesheet" href="/panel/tokens.css">
+<link rel="stylesheet" href="/panel/app.css">
+</head>
+<body>
+<div class="frame frame--running" data-screen="RUNNING" data-mode="default">
+  <div class="running-body">
+    <div class="running-stage" id="running-stage">Starting the storm&hellip;</div>
+    <div class="running-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="running-progress">
+      <div class="running-progress__fill" id="running-progress-fill"></div>
+    </div>
+  </div>
+</div>
+<script src="/panel/running.js"></script>
+</body>
+</html>

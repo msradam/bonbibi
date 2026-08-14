@@ -1,0 +1,503 @@
+/* Bonbibi panel — shared styles for all screens (.frame is the common
+   800x480 shell). RESULT's geometry is ported from
+   design_handoff_bonbibi_panel/design/Bonbibi Result Screen.dc.html
+   (the DOM reference); IDLE has no DOM reference, only the textual
+   spec in README §5, since it isn't one of the two "designed" screens.
+   tokens.css supplies every colour/size value used here.
+
+   Fonts are self-hosted from ./fonts/ (README §14): Jersey 20/25 (OFL,
+   Jersey20.woff2/Jersey25.woff2, latin subset only — this device has
+   no internet at runtime), Noto Sans (variable, covers 400/600/700),
+   Noto Sans Bengali (bengali unicode-range only; Latin glyphs in mixed
+   text fall through to Noto Sans via the font stack). Hind Siliguri,
+   Manjari and Noto Nastaliq Urdu aren't vendored yet since no screen
+   renders those locales yet — add them when Bengali/Malayalam/Urdu
+   layouts get built (README §15). */
+
+@font-face {
+  font-family: "Jersey 20";
+  src: url("fonts/Jersey20.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Jersey 25";
+  src: url("fonts/Jersey25.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Noto Sans";
+  src: url("fonts/NotoSans.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Noto Sans Bengali";
+  src: url("fonts/NotoSansBengali.woff2") format("woff2");
+  font-weight: 400;
+  unicode-range: U+0951-0952, U+0964-0965, U+0980-09FE, U+1CD0, U+1CD2, U+1CD5-1CD6, U+1CD8, U+1CE1, U+1CEA, U+1CED, U+1CF2, U+1CF5-1CF7, U+200C-200D, U+20B9, U+25CC, U+A8F1;
+  font-display: swap;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.chrome-label {
+  font-family: "Jersey 20", monospace;
+  font-size: 20px;
+  color: var(--surface-ink-secondary);
+}
+
+.frame {
+  inline-size: 800px;
+  block-size: 480px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-paper);
+  color: var(--surface-ink);
+  font-family: "Noto Sans", system-ui, sans-serif;
+  border: 2px solid var(--surface-ink);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden; /* "Nothing scrolls, ever" (README §1) — a layout bug should clip, never scroll */
+}
+
+.exercise-bar {
+  block-size: var(--size-exercise-bar);
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-inline: 10px;
+  background: var(--surface-ink);
+  color: var(--surface-paper);
+  font-family: "Jersey 20", monospace;
+  font-size: 20px;
+}
+.exercise-bar__label { letter-spacing: 0.08em; }
+.exercise-bar__sep { opacity: 0.55; }
+.exercise-bar__text { white-space: nowrap; }
+
+.source-line {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border-block-end: 2px solid var(--surface-rule);
+}
+.source-line > span[dir] { font-size: 20px; line-height: 1.2; }
+
+.result-body {
+  flex: 1;
+  min-block-size: 0;
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+}
+
+/* ---- gauge ---- */
+
+.gauge-col { inline-size: 224px; flex: none; min-block-size: 0; }
+.gauge { position: relative; inline-size: 224px; block-size: 340px; }
+
+.gauge__body {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 50px;
+  inline-size: var(--depth-gauge-body-inline-size);
+  block-size: var(--depth-gauge-body-block-size);
+  border: 2px solid var(--surface-ink);
+  overflow: hidden;
+}
+
+.gauge__band {
+  position: absolute;
+  inset-inline-start: 0;
+  inline-size: 100%;
+  font-family: "Jersey 20", monospace;
+  font-size: 16px; /* the one declared cell-rule exception — see tokens.json type.cell-alignment */
+  line-height: 1.1;
+  padding-block-start: 2px;
+  padding-inline-end: 4px;
+  text-align: end;
+  color: var(--depth-on-band-lo);
+}
+.gauge__band[data-hazard-class="D0"] { background: var(--depth-d0); }
+.gauge__band[data-hazard-class="D1"] { background: var(--depth-d1); }
+.gauge__band[data-hazard-class="D2"] { background: var(--depth-d2); }
+.gauge__band[data-hazard-class="D3"] { background: var(--depth-d3); color: var(--depth-on-band-hi); }
+.gauge__band--d4 {
+  position: absolute;
+  inset-block-start: 312px;
+  inset-inline-start: 50px;
+  inline-size: var(--depth-gauge-body-inline-size);
+  block-size: 26px;
+  background: var(--depth-d4);
+  border: 2px solid var(--surface-ink);
+  color: var(--depth-on-band-hi);
+  font-family: "Jersey 20", monospace;
+  font-size: 16px;
+  line-height: 1.1;
+  padding-block-start: 2px;
+  padding-inline-end: 4px;
+  text-align: end;
+}
+.gauge__d4-label {
+  position: absolute;
+  inset-block-start: 314px;
+  inset-inline-start: 114px;
+  white-space: nowrap;
+}
+
+.gauge__casing {
+  position: absolute;
+  inset-inline-start: 50px;
+  inline-size: var(--depth-gauge-body-inline-size);
+  block-size: 2px;
+}
+.gauge__casing--low { background: var(--depth-casing-low); }
+.gauge__casing--high { background: var(--depth-casing-high); }
+
+.gauge__break {
+  position: absolute;
+  inset-block-start: 306px;
+  inset-inline-start: 50px;
+  inline-size: var(--depth-gauge-body-inline-size);
+  block-size: 6px;
+  border-inline: 2px dashed var(--surface-ink);
+}
+
+.gauge__marker-outer, .gauge__marker-core, .gauge__marker-tab {
+  position: absolute;
+  inset-inline-start: 42px;
+}
+.gauge__marker-outer { inline-size: 64px; block-size: 6px; background: var(--depth-marker-outer); }
+.gauge__marker-core { inline-size: 64px; block-size: 2px; background: var(--depth-marker-core); }
+.gauge__marker-tab { inset-inline-start: 34px; inline-size: 8px; block-size: 10px; background: var(--depth-marker-outer); }
+
+.gauge__datum {
+  position: absolute;
+  inset-block-start: -2px;
+  inset-inline-start: 34px;
+  inline-size: 88px;
+  block-size: 4px;
+  background: var(--surface-ink);
+}
+.gauge__datum-label {
+  position: absolute;
+  inset-block-start: -22px;
+  inset-inline-start: 34px;
+  white-space: nowrap;
+}
+
+.gauge__limit-line {
+  position: absolute;
+  inset-inline-start: 42px;
+  inline-size: 80px;
+  block-size: 2px;
+  background: var(--surface-ink);
+}
+.gauge__lozenge {
+  position: absolute;
+  inset-inline-start: 104px;
+  inline-size: 120px;
+  block-size: 48px;
+  border: 2px solid var(--surface-ink);
+  background: var(--surface-paper);
+  padding: 0 6px;
+}
+.gauge__lozenge-value {
+  font-family: "Jersey 25", monospace;
+  font-size: 25px;
+  line-height: 25px;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.gauge__lozenge-name { font-family: "Jersey 20", monospace; font-size: 20px; line-height: 19px; }
+
+.gauge__ticks div { position: absolute; background: var(--surface-ink); }
+.gauge__tick-num {
+  position: absolute;
+  inset-inline-start: 0;
+  inline-size: 32px;
+  text-align: end;
+  font-family: "Jersey 20", monospace;
+  font-size: 20px;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* ---- fact column ---- */
+
+.fact-col { inline-size: 296px; flex: none; display: flex; flex-direction: column; gap: 8px; min-block-size: 0; }
+
+.status-chip { display: flex; align-items: center; gap: 8px; }
+#status-chip-text { font-family: "Jersey 20", monospace; font-size: 20px; }
+
+.readout {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-family: "Jersey 25", monospace;
+  line-height: 0.8;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.readout__value { font-size: 100px; }
+.readout__unit { font-size: 50px; }
+
+.hazard-line { font-size: 20px; line-height: 1.25; margin-block-start: 6px; }
+
+.fact-block { border-block-start: 2px solid var(--surface-rule); padding-block-start: 6px; }
+.fact-text { font-size: 20px; line-height: 1.25; text-wrap: pretty; }
+
+/* ---- verdict column ---- */
+
+.verdict-col { flex: 1; display: flex; flex-direction: column; gap: 8px; min-inline-size: 0; min-block-size: 0; }
+
+.verdict-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border: 2px solid var(--surface-ink);
+}
+.verdict-banner[data-status-chip="safe"] { background: var(--status-safe); color: var(--status-on-safe); }
+.verdict-banner[data-status-chip="danger"] { background: var(--status-danger); color: var(--status-on-danger); }
+.verdict-banner__glyph { inline-size: 16px; block-size: 17px; flex: none; border: 4px solid currentColor; }
+#verdict-text { font-family: "Jersey 20", monospace; font-size: 20px; line-height: 1.3; }
+
+.verdict-imperative { font-size: 20px; line-height: 1.3; font-weight: 700; text-wrap: pretty; }
+.verdict-imperative--bn { font-family: "Noto Sans Bengali", "Noto Sans", sans-serif; font-weight: 400; line-height: 1.75; }
+
+.shelter-card { border: 2px solid var(--surface-rule); padding: 6px 8px; }
+.shelter-card__head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.shelter-card__name { font-size: 20px; font-weight: 600; }
+.shelter-card__distance { font-family: "Jersey 25", monospace; font-size: 25px; font-variant-numeric: tabular-nums; }
+.shelter-card__route { display: flex; align-items: center; gap: 6px; margin-block-start: 4px; }
+
+.other-options-btn {
+  margin-block-start: auto;
+  block-size: var(--size-target-min-block);
+  inline-size: 100%;
+  background: var(--surface-paper);
+  color: var(--surface-ink);
+  border: 2px solid var(--surface-ink);
+  font-family: "Jersey 20", monospace;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+@media (prefers-contrast: forced), (forced-colors: active) {
+  .frame { forced-color-adjust: none; }
+}
+
+/* ---- IDLE ---- */
+
+.idle-head {
+  flex: none;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 10px 14px;
+  border-block-end: 2px solid var(--surface-rule);
+}
+.idle-wordmark { font-size: 25px; font-family: "Jersey 25", monospace; }
+.idle-mark { align-self: center; flex: none; }
+.idle-community { font-size: 20px; color: var(--surface-ink-secondary); flex: 1; }
+.idle-clock {
+  font-family: "Jersey 25", monospace;
+  font-size: 25px;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.idle-body {
+  flex: 1;
+  min-block-size: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+}
+
+.idle-selftest { border: 2px solid var(--surface-ink); padding: 10px 14px; }
+.idle-selftest[data-status-chip="danger"] { border-color: var(--status-danger); }
+.idle-selftest__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.idle-selftest__word {
+  font-family: "Jersey 25", monospace;
+  font-size: 50px;
+  line-height: 1;
+}
+.idle-selftest[data-status-chip="safe"] .idle-selftest__word { color: var(--status-safe); }
+.idle-selftest[data-status-chip="danger"] .idle-selftest__word { color: var(--status-danger); }
+.idle-selftest__stages {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-family: "Jersey 20", monospace;
+  font-size: 20px;
+}
+.idle-selftest__stages li[data-stage-result="fail"] { color: var(--status-danger); }
+.idle-selftest__stages li[data-stage-result="not_built"] { color: var(--surface-ink-secondary); }
+.idle-selftest__remedy { font-size: 20px; font-weight: 700; margin: 8px 0 0; }
+
+.idle-fact-row { display: flex; gap: 12px; }
+.idle-fact {
+  flex: 1;
+  border: 2px solid var(--surface-rule);
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.idle-fact[data-status-chip="no-information"] { border-color: var(--status-no-information); border-style: dashed; }
+.idle-fact__value { font-size: 20px; font-weight: 600; }
+.idle-fact__note { font-size: 20px; color: var(--surface-ink-secondary); }
+
+.idle-primary {
+  margin-block-start: auto;
+  block-size: 64px;
+  inline-size: 100%;
+  background: var(--status-mandatory);
+  color: var(--surface-paper);
+  border: 2px solid var(--surface-ink);
+  font-family: "Jersey 20", monospace;
+  font-size: 20px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+.idle-primary:disabled { background: var(--surface-rule); cursor: not-allowed; }
+
+.idle-actions { margin-block-start: auto; display: flex; gap: 12px; }
+.idle-actions .idle-primary { margin-block-start: 0; flex: 1; }
+.idle-secondary {
+  flex: none;
+  inline-size: 200px;
+  block-size: 64px;
+  background: var(--surface-paper);
+  color: var(--surface-ink);
+  border: 2px solid var(--surface-ink);
+  font-family: "Jersey 20", monospace;
+  font-size: 20px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+/* ---- MAP ---- */
+
+.map-head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-block-end: 2px solid var(--surface-rule);
+}
+.map-back {
+  inline-size: 36px;
+  block-size: 36px;
+  flex: none;
+  border: 2px solid var(--surface-ink);
+  background: var(--surface-paper);
+  color: var(--surface-ink);
+  font-size: 20px;
+  cursor: pointer;
+}
+.map-title { font-family: "Jersey 25", monospace; font-size: 25px; }
+
+.map-body { position: relative; flex: 1; min-block-size: 0; }
+.map-frame { width: 100%; height: 100%; border: none; display: block; }
+
+.map-controls {
+  position: absolute;
+  inset-block-end: 10px;
+  inset-inline-end: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, 50px);
+  grid-template-rows: repeat(2, 54px);
+  gap: 4px;
+  background: color-mix(in srgb, var(--surface-paper) 85%, transparent);
+  padding: 4px;
+  border: 2px solid var(--surface-ink);
+}
+.map-ctl {
+  border: 2px solid var(--surface-ink);
+  background: var(--surface-paper);
+  color: var(--surface-ink);
+  font-family: "Jersey 20", monospace;
+  font-size: 22px;
+  cursor: pointer;
+}
+#ctl-zoomin { grid-column: 1; grid-row: 1; }
+#ctl-up { grid-column: 2; grid-row: 1; }
+#ctl-zoomout { grid-column: 3; grid-row: 1; }
+#ctl-left { grid-column: 1; grid-row: 2; }
+#ctl-down { grid-column: 2; grid-row: 2; }
+#ctl-right { grid-column: 3; grid-row: 2; }
+
+.map-status {
+  flex: none;
+  padding: 8px 14px;
+  font-family: "Noto Sans", sans-serif;
+  font-size: 20px;
+  border-block-start: 2px solid var(--surface-rule);
+  min-block-size: 20px;
+}
+
+.map-legend {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 6px 14px 10px;
+  font-family: "Jersey 20", monospace;
+  font-size: 20px;
+}
+.map-legend__sw {
+  display: inline-block;
+  inline-size: 16px;
+  block-size: 13px;
+  margin-inline-end: 3px;
+  border: 1px solid var(--surface-ink);
+  vertical-align: -2px;
+}
+.map-legend__you { margin-inline-start: auto; color: var(--status-mandatory); }
+
+/* ---- RUNNING ---- */
+
+.running-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 0 40px;
+}
+.running-stage {
+  font-family: "Jersey 25", monospace;
+  font-size: 50px;
+  text-align: center;
+  line-height: 1.2;
+}
+.running-progress {
+  inline-size: 100%;
+  block-size: var(--progress-block-size);
+  border: 2px solid var(--surface-ink);
+  background: var(--surface-paper);
+}
+.running-progress__fill {
+  block-size: 100%;
+  background: var(--surface-ink);
+  inline-size: 0%;
+}
