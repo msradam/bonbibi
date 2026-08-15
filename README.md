@@ -8,6 +8,12 @@ VideoCore VII / V3D) simulates the flood while the four ARM cores run the
 router and the language model, with no internet at runtime. Named after
 the guardian of the Sundarbans.
 
+"Offline" is a runtime claim, not a never-touches-a-network claim: the
+seven areas in `samples/` need no internet at all, since their DEM,
+basemap, and shelter data already ship in the repo. The only online
+step, ever, is fetching a *new* area (three commands, one-time); after
+that it's offline too. See Quick start below.
+
 ![Bonbibi console: Red Hook flooding with hazard bands, routes, and grounded guidance](docs/img/console.png)
 
 Submission writeup for the Arm AI Optimization Challenge: `WRITEUP.md`.
@@ -78,7 +84,11 @@ the AIDR hazard classes (H1 <0.3 m, H2 <0.5 m, H3 <1.2 m, H4+ above).
 
 ## Quick start (on the Pi)
 
-One-time, online: fetch an area (elevation, basemap, shelters).
+Skip straight to "Build the flood harness" below if you're using one of
+the seven sample areas already in `samples/`, no fetch needed.
+
+One-time, online, only for a new area: fetch its elevation, basemap,
+and shelters.
 
 ```
 python3 fetch_dem.py redhook 40.667 40.685 -74.02 -73.998

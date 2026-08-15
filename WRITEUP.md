@@ -35,6 +35,8 @@ One board, two engines, running at the same time:
 
 The interaction is a kiosk: run a storm, and the console shows hazard bands draped over a real basemap with an area advisory addressed by capability. Tap anywhere ("this person is here") and deterministic BFS finds the nearest shelter reachable under each mobility threshold, draws the routes, and Granite composes personal guidance from the computed verdicts. A headless CLI (`bonbibi_cli.py`) does the same over SSH, rendering the flood raster in ANSI half-blocks.
 
+**What "offline" means, precisely.** The seven areas shipped in `samples/` (Red Hook, Dhaka, Gabura/Sundarbans, Beira, Sehwan, Kuttanad, downtown DC) need no internet at all, ever: elevation, basemap, and shelter data are already in the repo, and the basemap is a local Protomaps PMTiles extract served by the Pi itself, not a remote tile server. Adding a new area is the only online step (`fetch_dem.py`, `fetch_basemap.py`, `fetch_shelters.py`, run once), after which that area is offline too. Simulation, routing, narration, and the map all run with the network interface down. The one optional exception is `fetch_live.py` (USGS gage + Open-Meteo rainfall), which drives a run from real conditions instead of a manual rain rate and needs connectivity only when invoked.
+
 ### Mobility profiles, from the flood-safety literature
 
 | Profile | Still-water limit | Basis |
@@ -104,6 +106,17 @@ Full tables, thermal traces, and raw logs: `HACKATHON.md` and the seppa repo's `
 ## Hardware
 
 Raspberry Pi 5 16GB (4× Cortex-A76 @ 2.4 GHz, VideoCore VII V3D, LPDDR4X), Vulkan 1.3 via Mesa v3dv, passively cooled. Offline data bundle per deployed area: ~12 KB elevation + <1 MB vector basemap + shelter list. Total resident inference memory: ~2.3 GB.
+
+Hardware verification, straight from the raw logs, not asserted specs:
+
+```
+$ head -1 bench_llm_cpu.log
+=== 2026-08-14T16:11:51Z — Raspberry Pi 5 Model B Rev 1.1 ===
+
+$ grep system_info spec_decode.log
+system_info: n_threads = 3 (n_threads_batch = 3) / 4 | CPU : NEON = 1 | ARM_FMA = 1 |
+FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 |
+```
 
 ---
 
