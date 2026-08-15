@@ -65,7 +65,7 @@ Shelter candidates come from OpenStreetMap (schools, community centres, places o
 
 This challenge scores optimization, so here is the ledger: every number measured on the board, cool starts, with reproduction commands in the repos. Items 3–5's CPU-side numbers were re-measured live on 2026-08-14 against the actual production model (`granite-4.1-3b-Q4_0.gguf`, not a smaller stand-in), CPU-only (`-ngl 0` on every run, kiosk/display stopped to remove GPU contention), `-t 3`, `r=5`; raw `llama-bench` output is in `bench_llm_cpu.log`, reproduction script `bench_llm_cpu.sh`.
 
-**1. The GPU kernel was optimized by an LLM inside a machine-owned correctness gate.** Seppa (companion repo) is a Burr finite-state machine served over MCP: the model proposes kernel and host-contract changes; the machine owns compile → verify → benchmark → keep/revert and refuses out-of-order transitions, so a variant that fails physics can never produce a benchmark number. A falsification sweep attributed the stencil's cost to fixed per-invocation overhead, not memory traffic, and the winning kernel fuses the two passes and strip-mines two cells per invocation: **1.59x** (1,345 → 2,140 steps/s at 256², NMSE 1.3e-9 over 4,000 steps). The machine then re-derived the result from its own baseline over the network, including refusing to benchmark a deliberately mass-violating kernel.
+**1. The GPU kernel was optimized by an LLM inside a machine-owned correctness gate.** A Burr finite-state machine served over MCP: the model proposes kernel and host-contract changes; the machine owns compile → verify → benchmark → keep/revert and refuses out-of-order transitions, so a variant that fails physics can never produce a benchmark number. A falsification sweep attributed the stencil's cost to fixed per-invocation overhead, not memory traffic, and the winning kernel (`shaders/fused2s.comp`) fuses the two passes and strip-mines two cells per invocation: **1.59x** (1,345 → 2,140 steps/s at 256², NMSE 1.3e-9 over 4,000 steps). The machine then re-derived the result from its own baseline over the network, including refusing to benchmark a deliberately mass-violating kernel. One full session, ledger and all: `docs/gpu_kernel/optimization_session/`.
 
 **2. The concurrency claim is measured, with a counterfactual.** Under simultaneous 4-thread LLM decode, the optimized kernel's advantage *grows* to **2.09x** (712 vs 340 steps/s), while decode keeps 90% of its solo rate. A gate-verified CPU-only version of the same physics (OpenMP) outruns the GPU on idle cores (3,803 steps/s), but idle cores don't exist in this deployment: the best CPU-only scheme (core partitioning) reaches 8.4 t/s + 681 steps/s, while the GPU split delivers 10.3 t/s + 712 steps/s, dominating partitioned, oversubscribed (decode collapses 79%), and time-sliced alternatives on both axes.
 
@@ -99,7 +99,7 @@ Narrator (Granite 4.1 3B Q4_0, production config `-t 3 --cache-reuse 256`):
 | Storm → area advisory | ~32 s |
 | Tap → personal guidance | ~41 s first, ~14 s warm |
 
-Full tables, thermal traces, and raw logs: `BENCHMARK_RESULTS.md` and the seppa repo's `docs/paper/` (a companion paper with every number's reproduction command).
+Full tables, thermal traces, and raw logs: `BENCHMARK_RESULTS.md` and `docs/gpu_kernel/` (the full technical paper, `paper.pdf`, with every number's reproduction command).
 
 ---
 
@@ -122,7 +122,7 @@ FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 |
 
 ## Challenges
 
-**The optimizer needed a cage.** LLM-proposed kernels that break physics can look fast. Seppa's FSM makes verification a state transition the model cannot skip: the demo includes the machine refusing to benchmark a kernel with doubled rainfall.
+**The optimizer needed a cage.** LLM-proposed kernels that break physics can look fast. The correctness gate's FSM makes verification a state transition the model cannot skip: the demo includes the machine refusing to benchmark a kernel with doubled rainfall.
 
 **The first optimization search failed for a structural reason.** Searching shader text found nothing; every real win lived in the host contract (buffer packing, kernel fusion, dispatch geometry). Widening the action space recovered the full speedup. Plateaus are evidence about the search space, not just the hardware.
 
@@ -149,7 +149,7 @@ FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 |
 
 - Wire the street-graph router (RoutingKit CCH, ~14 ms re-customization, already in the repo) into the console for street-name routes and narration.
 - On-device TTS (Piper) for spoken guidance within the measured concurrency envelope.
-- GPU-accelerated inference through Seppa's verified small-matmul path once the upstream llama.cpp Vulkan composition defect (isolated on llvmpipe, documented in the seppa repo) is fixed: the same board would then run physics and attention on the GPU.
+- GPU-accelerated inference through the verified small-matmul kernel path once an upstream llama.cpp Vulkan composition defect (isolated on llvmpipe) is fixed: the same board would then run physics and attention on the GPU.
 - Live sensor assimilation (FloodNet-class street sensors) where feeds exist.
 
 ---

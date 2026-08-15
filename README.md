@@ -38,10 +38,14 @@ only composes those computed facts into plain language, through Granite's
 document-grounding chat template. A small model doing depth-threshold
 arithmetic is a safety bug; a breadth-first search is not.
 
-The GPU kernel is the fused, strip-mined variant found and verified by
-[Seppa](https://github.com/msradam/seppa), a correctness-gated,
-LLM-driven kernel optimizer: 1.59x over the original two-pass stencil,
-with the speedup growing to 2.09x under concurrent CPU load.
+The GPU kernel (`shaders/fused2s.comp`) is the fused, strip-mined
+variant found and verified by a correctness-gated, LLM-driven kernel
+search: a finite-state machine served over MCP that lets a model
+propose kernel changes but owns compile, verify, benchmark, and
+keep/revert itself, so a variant that fails physics can never produce
+a benchmark number. 1.59x over the original two-pass stencil, growing
+to 2.09x under concurrent CPU load. Evidence, raw logs, and one full
+optimization session: `docs/gpu_kernel/`.
 
 ## Mobility profiles
 
@@ -171,12 +175,12 @@ when someone reads this:
 
 ## Pinned versions
 
-llama.cpp at commit `bb28c1f` plus the four patches in the seppa repo's
-`pi/` directory; Mesa v3dv 25.0.7 (Raspberry Pi OS packaging); model
-`granite-4.1-3b-Q4_0.gguf` from ibm-granite/granite-4.1-3b-GGUF;
-Raspberry Pi 5 16 GB (BCM2712, VideoCore VII V3D 7.1.10.2). Expected
-results and tolerances for each measured claim are stated where the
-claim is made (README, BENCHMARK_RESULTS.md, and the seppa paper).
+llama.cpp at commit `bb28c1f`; Mesa v3dv 25.0.7 (Raspberry Pi OS
+packaging); model `granite-4.1-3b-Q4_0.gguf` from
+ibm-granite/granite-4.1-3b-GGUF; Raspberry Pi 5 16 GB (BCM2712,
+VideoCore VII V3D 7.1.10.2). Expected results and tolerances for each
+measured claim are stated where the claim is made (README,
+BENCHMARK_RESULTS.md, and `docs/gpu_kernel/paper.pdf`).
 
 ## License
 

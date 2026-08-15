@@ -2,9 +2,9 @@
 
 **Device:** Raspberry Pi 5 16GB (4× Cortex-A76 @ 2.4 GHz, VideoCore VII V3D, LPDDR4X), passively cooled
 **Software:** llama.cpp `57998d5`, Mesa v3dv (Vulkan 1.3), Granite 4.1 3B Q4_0 (production narrator)
-**Dates:** GPU kernel and concurrency numbers 2026-07-12 (Seppa repo); CPU LLM numbers reproduced live 2026-08-14 on the production model, kiosk stopped to remove GPU contention, cool starts
+**Dates:** GPU kernel and concurrency numbers 2026-07-12; CPU LLM numbers reproduced live 2026-08-14 on the production model, kiosk stopped to remove GPU contention, cool starts
 
-All commands to reproduce every number below are in `bench_llm_cpu.sh` (CPU/LLM) and the Seppa repo's `docs/paper/` (GPU kernel). Raw output: `bench_llm_cpu.log` (llama-bench) and `spec_decode.log` (speculative decoding server).
+All commands to reproduce every number below are in `bench_llm_cpu.sh` (CPU/LLM) and `docs/gpu_kernel/paper.pdf` (GPU kernel). Raw output: `bench_llm_cpu.log` (llama-bench), `spec_decode.log` (speculative decoding server), and `docs/gpu_kernel/benchmarks/` (GPU kernel and concurrency logs).
 
 ## Summary
 
@@ -22,7 +22,7 @@ All commands to reproduce every number below are in `bench_llm_cpu.sh` (CPU/LLM)
 
 ## GPU: correctness-gated kernel optimization
 
-Seppa (companion repo) is a Burr finite-state machine served over MCP: the model proposes kernel and host-contract changes, the machine owns compile → verify → benchmark → keep/revert, and refuses out-of-order transitions: a variant that fails physics can never produce a benchmark number.
+A Burr finite-state machine served over MCP: the model proposes kernel and host-contract changes, the machine owns compile → verify → benchmark → keep/revert, and refuses out-of-order transitions: a variant that fails physics can never produce a benchmark number. One real session, full ledger included: `docs/gpu_kernel/optimization_session/`.
 
 | Kernel | steps/s @ 256² | vs. baseline | NMSE vs. CPU reference |
 |---|---|---|---|
