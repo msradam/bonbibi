@@ -154,11 +154,9 @@ when someone reads this:
   the pinned llama.cpp build.
 - **Full ledger**: `BENCHMARK_RESULTS.md`, every number with its
   reproduction command next to it.
-- **Screenshots**: `docs/img/`, `devpost/gallery/`, real captures of
-  the console and panel, not mockups.
-- **Demo video**: `video/out/` for the render, `video/SPEAKER_NOTES.md`
-  for narration, `deck/` for the source slide deck (Marp) spliced with
-  real screen capture.
+- **Screenshots**: `docs/img/`, real captures of the console and panel,
+  not mockups.
+- **Demo video**: attached to the Devpost submission.
 
 ## Pinned versions
 

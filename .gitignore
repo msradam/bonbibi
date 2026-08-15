@@ -9,11 +9,10 @@ deps/routingkit/
 .DS_Store
 FABLE_HANDOFF.md
 DEVPOST_ANSWERS.md
-deck/deck.md
-deck/*.b64
-deck/slides/
-deck/segs/
-deck/concat_video.mp4
+deck/
+video/
+devpost/**/*_template.md
+devpost/thumbnail_template.md
 devpost/gallery/graphics.md
 devpost/thumbnail.md
 Bonbibi Design System.zip
