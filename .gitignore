@@ -11,8 +11,5 @@ FABLE_HANDOFF.md
 DEVPOST_ANSWERS.md
 deck/
 video/
-devpost/**/*_template.md
-devpost/thumbnail_template.md
-devpost/gallery/graphics.md
-devpost/thumbnail.md
+devpost/
 Bonbibi Design System.zip

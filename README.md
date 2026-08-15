@@ -19,6 +19,8 @@ that it's offline too. See Quick start below.
 Submission writeup for the Arm AI Optimization Challenge: `WRITEUP.md`.
 Full benchmark ledger with raw commands: `BENCHMARK_RESULTS.md`.
 Hardware kit (two orderable build variants): `docs/KIT.md`.
+Beyond the hackathon (market, deployment pilot): `docs/POSITIONING.md`
+and `docs/PILOT.md`.
 
 ## Idea
 
