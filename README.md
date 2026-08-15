@@ -169,8 +169,15 @@ when someone reads this:
   the pinned llama.cpp build.
 - **Full ledger**: `BENCHMARK_RESULTS.md`, every number with its
   reproduction command next to it.
+- **GPU kernel evidence**: `docs/gpu_kernel/`, the full technical
+  paper, one real correctness-gate optimization session with its full
+  machine-generated ledger, and the concurrency/CPU-only-counterfactual
+  benchmark logs with thermal traces.
 - **Screenshots**: `docs/img/`, real captures of the console and panel,
   not mockups.
+- **Board recovery logs**: `sdcard_recovery/`, pulled from the Pi's SD
+  card after it stopped responding on 2026-08-14; see WRITEUP.md's
+  Challenges section for what they show.
 - **Demo video**: attached to the Devpost submission.
 
 ## Pinned versions

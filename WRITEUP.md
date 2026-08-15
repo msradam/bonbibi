@@ -2,7 +2,7 @@
 
 **Arm Create: AI Optimization Challenge 2026 Submission (Physical AI track)**
 
-**Author: Adam Munawar Rahman, July 2026**
+**Author: Adam Munawar Rahman, August 2026**
 
 Bonbibi turns a Raspberry Pi 5 into an offline flood-guidance station. The board's usually-idle VideoCore GPU simulates surface flooding over real terrain, physics-verified against a double-precision reference, while the four ARM cores concurrently route people to the nearest reachable shelter by mobility profile (wheelchair, on foot, vehicle) and Granite 4.1 3B narrates the computed result in plain language, grounded so it cannot invent a fact. Real cartography, real elevation, real shelter locations, all served from the device. No internet, no cloud. Named after the guardian spirit of the Sundarbans.
 
