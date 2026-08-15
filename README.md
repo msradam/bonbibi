@@ -17,7 +17,6 @@ that it's offline too. See Quick start below.
 ![Bonbibi console: Red Hook flooding with hazard bands, routes, and grounded guidance](docs/img/console.png)
 
 Submission writeup for the Arm AI Optimization Challenge: `WRITEUP.md`.
-Measured optimization ledger and literature citations: `HACKATHON.md`.
 Full benchmark ledger with raw commands: `BENCHMARK_RESULTS.md`.
 Hardware kit (two orderable build variants): `docs/KIT.md`.
 
@@ -45,8 +44,8 @@ with the speedup growing to 2.09x under concurrent CPU load.
 ## Mobility profiles
 
 Thresholds are limiting still-water depths from the flood-safety
-literature (ARR Project 10; AIDR Guideline 7-3; quotes and citations in
-`HACKATHON.md`):
+literature (ARR Project 10; AIDR Guideline 7-3; full citations in
+`WRITEUP.md`'s Works Cited):
 
 | Profile | Limit | Basis |
 |---|---|---|
@@ -127,7 +126,7 @@ physics); `GGML_VK_VISIBLE_DEVICES=99` hides the GPU from the inference
 process. With any Vulkan device visible, llama.cpp otherwise places CPU
 weights in GPU host-pinned memory even at `-ngl 0`, worth **10.6x on
 prompt processing and +13.7% on decode** on the production model
-(measured on the board; see `BENCHMARK_RESULTS.md` and `HACKATHON.md`).
+(measured on the board; see `BENCHMARK_RESULTS.md`).
 
 ## Sample areas
 
@@ -175,7 +174,7 @@ llama.cpp at commit `bb28c1f` plus the four patches in the seppa repo's
 `granite-4.1-3b-Q4_0.gguf` from ibm-granite/granite-4.1-3b-GGUF;
 Raspberry Pi 5 16 GB (BCM2712, VideoCore VII V3D 7.1.10.2). Expected
 results and tolerances for each measured claim are stated where the
-claim is made (README, HACKATHON.md, and the seppa paper).
+claim is made (README, BENCHMARK_RESULTS.md, and the seppa paper).
 
 ## License
 

@@ -99,7 +99,7 @@ Narrator (Granite 4.1 3B Q4_0, production config `-t 3 --cache-reuse 256`):
 | Storm → area advisory | ~32 s |
 | Tap → personal guidance | ~41 s first, ~14 s warm |
 
-Full tables, thermal traces, and raw logs: `HACKATHON.md` and the seppa repo's `docs/paper/` (a companion paper with every number's reproduction command).
+Full tables, thermal traces, and raw logs: `BENCHMARK_RESULTS.md` and the seppa repo's `docs/paper/` (a companion paper with every number's reproduction command).
 
 ---
 
